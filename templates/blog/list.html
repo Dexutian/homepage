@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Growth Studio - Blog</title>
+</head>
+
+<body>
+	{% for blog in blogs %}
+	<h2>{{ blog.title }}</h2>
+	<p>{{ blog.body | slice:":80" }}</p>
+	<p>{{ blog.posted }} - By {{ blog.author }}</p>
+	{% endfor %}
+</body>
+</html>

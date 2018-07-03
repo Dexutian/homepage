@@ -28,4 +28,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name = 'index'),
     path('auth/', include(auth_patterns)),
+    path('blog/', include("blog.urls")),
 ]
