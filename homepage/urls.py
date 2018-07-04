@@ -29,4 +29,6 @@ urlpatterns = [
     path('', views.index, name = 'index'),
     path('auth/', include(auth_patterns)),
     path('blog/', include("blog.urls")),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('uploadimg/', views.upload_image),
 ]

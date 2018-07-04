@@ -3,11 +3,14 @@
 <head>
 <meta charset="utf-8">
 <title>{{ blog.title }}</title>
+{% load staticfiles %}
+<link href="{% static 'other/css/detail.css' %}" rel="stylesheet">
 </head>
 
 <body>
 <h2>{{ blog.title }}</h2>
-<p>{{ blog.body }}</p>
+<p>{{ blog.body | safe }}</p>
 <p>{{ blog.posted }} - By {{ blog.author }}</p>
+<script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 </body>
 </html>
