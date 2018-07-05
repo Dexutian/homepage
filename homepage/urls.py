@@ -18,6 +18,8 @@ from django.urls import path
 from homepage import views
 from django.urls import include
 from django.contrib.auth import views as auth_views
+from django.conf.urls.static import static
+from django.conf import settings
 
 auth_patterns = [
 	path('login/', auth_views.login, {'template_name': 'index/login.html'}, name='login'),
@@ -31,4 +33,4 @@ urlpatterns = [
     path('blog/', include("blog.urls")),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('uploadimg/', views.upload_image),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

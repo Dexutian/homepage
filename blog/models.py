@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import permalink
-from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 # Create your models here.
 class Blog(models.Model):
@@ -14,7 +14,7 @@ class Blog(models.Model):
     author = models.ForeignKey(User, verbose_name='作者', on_delete=models.CASCADE)
     slug = models.SlugField(max_length=50, unique=True, verbose_name='URL')
     # body = models.TextField(verbose_name='正文')
-    body = RichTextField()
+    body = RichTextUploadingField(verbose_name='正文')
     posted = models.DateField(db_index=True, auto_now_add=True)
 
     def __str__(self):

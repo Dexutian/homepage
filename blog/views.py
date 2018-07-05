@@ -5,6 +5,9 @@ from django.http import HttpResponse
 from blog.models import Blog
 
 # Create your views here.
+def blog_index(request):
+    return render_to_response('blog/blog_index.html')
+
 def blog_list(request):
     return render_to_response('blog/list.html', {'blogs': Blog.objects.all()})
 
