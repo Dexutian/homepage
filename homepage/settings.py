@@ -143,5 +143,5 @@ SUIT_CONFIG = {
     'ADMIN_NAME': 'Django 后台',
     'SHOW_REQUIRED_ASTERISK': True,
     'CONFIRM_UNSAVED_CHANGES': True,
-    'LIST_PER_PAGE': 5,
+    'LIST_PER_PAGE': 20,
 }
