@@ -12,15 +12,8 @@
   </head>
 
   <body>
-	<div id="jstree_demo_div">
-		<ul>
-		<li>Root node</li>
-			<ul>
-			<li>Child node 1</li>
-			<li>Child node 2</li>
-			</ul>
-		</ul>
-	</div>
+	<div id="container">
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -28,8 +21,17 @@
 	<script src="{% static 'jsTree/jstree.min.js' %}"></script>
 
     <!-- Icons -->
-    <script>
-      $('#jstree_demo_div').jstree();
-    </script>
+	<script>
+	$(function() {
+		$('#container').jstree({
+			'core' : {
+				'data' : {
+					"url" : "{% url 'blog:get_category_data' %}",
+					"dataType" : "json" // needed only if you do not supply JSON headers
+				}
+			}
+		});
+	});
+	</script>
   </body>
 </html>

@@ -2,7 +2,6 @@ Django==2.0.4
 django-ckeditor==5.5.0
 django-js-asset==1.1.0
 django-suit==0.2.26
-mod-wsgi==4.6.4+ap24vc14
 Pillow==5.2.0
 pluggy==0.6.0
 py==1.5.4
