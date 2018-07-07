@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ MEDIA_URL }}pic/favicon.ico">
+
+    <title>博客首页</title>
+
+    {% load staticfiles %}
+	<!-- core CSS -->
+	<link href="{% static 'bootstrap-4.1.1/css/bootstrap.min.css' %}" rel="stylesheet">
+	<link href="{% static 'jsTree/themes/default/style.min.css' %}" rel="stylesheet">
+<!--    <link href="{% static 'bootstrap-4.1.1/css/dashboard.css' %}" rel="stylesheet">-->
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">博客分类</a>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+<!--
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky">
+          </div>
+        </nav>
+-->
+		<div id="container">
+    	</div>
+
+<!--
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        </main>
+-->
+      </div>
+    </div>
+
+    <!-- core JavaScript
+    ================================================== -->
+    <script src="{% static 'bootstrap-4.1.1/js/vendor/jquery-3.3.1.min.js' %}"></script>
+	<script src="{% static 'jsTree/jstree.min.js' %}"></script>
+    <script src="{% static 'bootstrap-4.1.1/js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap-4.1.1/js/bootstrap.min.js' %}"></script>
+	<script>
+	$(function() {
+		$('#container').jstree({
+			plugins : ["themes"],
+			'core' : {
+				"themes" : {"icons" : true, "dots" : true},
+				'data' : {
+					"url" : "{% url 'blog:get_category_data' %}",
+					"dataType" : "json" // needed only if you do not supply JSON headers
+				}
+			}
+		});
+	});
+	</script>
+  </body>
+</html>

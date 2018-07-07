@@ -24,7 +24,9 @@
 	<script>
 	$(function() {
 		$('#container').jstree({
+			plugins : ["themes"],
 			'core' : {
+				"themes" : {"icons" : true, "dots" : true},
 				'data' : {
 					"url" : "{% url 'blog:get_category_data' %}",
 					"dataType" : "json" // needed only if you do not supply JSON headers

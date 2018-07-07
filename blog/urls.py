@@ -3,6 +3,7 @@ from django.urls import path, re_path
 from blog import views
 
 urlpatterns = [
+    path('index/', views.index, name='blog_index'),
     path('category/', views.category, name='category'),
     path('get_category_data/', views.get_category_data, name='get_category_data'),
     path('list/', views.blog_list, name='blog_list'),
