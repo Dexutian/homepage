@@ -12,8 +12,7 @@
     {% load staticfiles %}
 	<!-- core CSS -->
 	<link href="{% static 'bootstrap-4.1.1/css/bootstrap.min.css' %}" rel="stylesheet">
-	<link href="{% static 'jsTree/themes/default/style.min.css' %}" rel="stylesheet">
-<!--    <link href="{% static 'bootstrap-4.1.1/css/dashboard.css' %}" rel="stylesheet">-->
+	<link href="{% static 'gijgo-1.9.6/css/gijgo.min.css' %}" rel="stylesheet">
   </head>
 
   <body>
@@ -22,7 +21,7 @@
     </nav>
 
     <div class="container-fluid">
-      <div class="row">
+<!--      <div class="row">-->
 <!--
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
@@ -36,28 +35,23 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
         </main>
 -->
-      </div>
+<!--      </div>-->
     </div>
 
     <!-- core JavaScript
     ================================================== -->
     <script src="{% static 'bootstrap-4.1.1/js/vendor/jquery-3.3.1.min.js' %}"></script>
-	<script src="{% static 'jsTree/jstree.min.js' %}"></script>
+	<script src="{% static 'gijgo-1.9.6/js/gijgo.min.js' %}"></script>
     <script src="{% static 'bootstrap-4.1.1/js/vendor/popper.min.js' %}"></script>
     <script src="{% static 'bootstrap-4.1.1/js/bootstrap.min.js' %}"></script>
-	<script>
-	$(function() {
-		$('#container').jstree({
-			plugins : ["themes"],
-			'core' : {
-				"themes" : {"icons" : true, "dots" : true},
-				'data' : {
-					"url" : "{% url 'blog:get_category_data' %}",
-					"dataType" : "json" // needed only if you do not supply JSON headers
-				}
-			}
-		});
-	});
-	</script>
+	<script type="text/javascript">
+            $(document).ready(function () {
+                $('#container').tree({
+                    uiLibrary: 'bootstrap',
+                    dataSource: '{% url "blog:get_category_data" %}',
+                    primaryKey: 'id'
+                });
+            });
+    </script>
   </body>
 </html>
