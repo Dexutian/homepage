@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-import json, os
-from blog.extend import get_category
+import json, os, logging
 
+from blog.extend import get_category
 from blog.models import Blog, Category
 
 # Create your views here.
@@ -16,9 +16,14 @@ def category(request):
 
 @csrf_exempt
 def get_category_data(request):
+    path = os.getcwd()
+    filename = os.path.join(path, 'log.txt')
+    logging.basicConfig(filename=filename, level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    logger = logging.getLogger(__name__)
     category_root = Category.objects.get(parent_category=None)
     data_json = get_category(category_root.slug)
-    return HttpResponse(json.dumps(data_json), content_type='application/json')
+    logger.info(json.dumps([data_json]))
+    return HttpResponse(json.dumps([data_json]), content_type='application/json')
 
 def blog_list(request):
     return render_to_response('blog/list.html', {'blogs': Blog.objects.all()})
