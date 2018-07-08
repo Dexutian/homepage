@@ -11,8 +11,10 @@ from blog.models import Blog, Category
 def index(request):
     return render_to_response('blog/blog_index.html')
 
-def category(request):
-    return render_to_response('blog/blog_category.html', {'category_root':Category.objects.get(parent_category = None)})
+def list_category(request, slug):
+    category = Category.objects.get(slug=slug)
+    return render_to_response('blog/list.html', {'blogs': category.blog_set.all()})
+
 
 @csrf_exempt
 def get_category_data(request):

@@ -16,6 +16,12 @@
   </head>
 
   <body>
+	  <div class="row">
+		  <div id="category" class="row-col-2">
+		  </div>
+		  <div class="row-col-10">
+		  </div>
+	  </div>
 	
 <!--
 	<li class="nav-item">
@@ -65,7 +71,7 @@
 					node += '</ul></li>'
 				}
 				else{
-					node += '<li class="nav-item"><a class="nav-link" href="#">'+data[i]["text"]+'</a></li>'
+					node += '<li class="nav-item"><a class="nav-link" href="{% url "blog:list_category" "000001001001" %}">'+data[i]["text"]+'</a></li>'
 				}
 			}
 			return node;
@@ -73,7 +79,7 @@
 		$(document).ready(function () {
 			$.get("{% url 'blog:get_category_data' %}", function(data){
 				var node_str = createNode(data);
-				$("body").append('<ul class="nav flex-column">'+node_str+'</ul>');
+				$("#category").append('<ul class="nav flex-column">'+node_str+'</ul>');
 			})
 		});
     </script>
