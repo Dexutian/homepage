@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ MEDIA_URL }}pic/favicon.ico">
+
+    <title>博客首页</title>
+
+    {% load staticfiles %}
+	<!-- core CSS -->
+	<link href="{% static 'bootstrap-4.1.1/css/bootstrap.min.css' %}" rel="stylesheet">
+	<link href="{% static 'other/css/blog_index.css' %}" rel="stylesheet">
+  </head>
+
+  <body>
+	  <div class="row">
+		  <div id="category" class="row-col-2">
+		  </div>
+		  <div class="row-col-10">
+		  </div>
+	  </div
+
+    <!-- core JavaScript
+    ================================================== -->
+    <script src="{% static 'bootstrap-treeview-1.2.0/jquery.js' %}"></script>
+    <script src="{% static 'bootstrap-4.1.1/js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap-4.1.1/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript">
+		function createNode(data){
+			node = ''
+			for(var i=0; i < data.length; i++){
+				if(data[i]["children"]){
+					node += '<li class="nav-item"><a class="nav-link" href="#'+data[i]["id"]+ '" data-toggle="collapse">'+data[i]["text"]+'</a><ul id="'+data[i]["id"]+'" class="nav flex-column collapse">'
+					node += createNode(data[i]["children"]);
+					node += '</ul></li>'
+				}
+				else{
+					node += '<li class="nav-item"><a class="nav-link" href="#">'+data[i]["text"]+'</a></li>'
+				}
+			}
+			return node;
+		}
+		$(document).ready(function () {
+			$.get("{% url 'blog:get_category_data' %}", function(data){
+				var node_str = createNode(data);
+				$("#category").append('<ul class="nav flex-column">'+node_str+'</ul>');
+			})
+		});
+    </script>
+  </body>
+</html>

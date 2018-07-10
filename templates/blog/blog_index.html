@@ -12,76 +12,44 @@
     {% load staticfiles %}
 	<!-- core CSS -->
 	<link href="{% static 'bootstrap-4.1.1/css/bootstrap.min.css' %}" rel="stylesheet">
+	<link href="{% static 'jsTree/themes/default/style.min.css' %}" rel="stylesheet">
 	<link href="{% static 'other/css/blog_index.css' %}" rel="stylesheet">
   </head>
 
   <body>
-	  <div class="row">
-		  <div id="category" class="row-col-2">
-		  </div>
-		  <div class="row-col-10">
+	  <div class="container-fluid">
+		  <div class="row">
+			  <div class="col-2" id="category">
+		  	  </div>
+			  <div class="col-10">
+				   <iframe name='main' id="iframepage" frameborder="0" ></iframe>
+			  </div>
 		  </div>
 	  </div>
-	
-<!--
-	<li class="nav-item">
-		<a class="nav-link" href="#000001" data-toggle="collapse">一级目录1</a>
-		<ul id="000001" class="nav flex-column collapse">
-			<li class="nav-item">
-				<a class="nav-link" href="#000001001" data-toggle="collapse">二级目录1-1</a><ul id="000001001" class="nav flex-column collapse">
-				<li class="nav-item">
-					<a class="nav-link" href="#">三级目录1-1-1</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">三级目录1-1-2</a>
-				</li>
-				</ul>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">二级目录1-2</a>
-			</li>
-		</ul>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link" href="#000002" data-toggle="collapse">一级目录2</a>
-		<ul id="000002" class="nav flex-column collapse">
-			<li class="nav-item">
-				<a class="nav-link" href="#">二级目录2-1</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">二级目录2-2</a>
-			</li>
-		</ul>
-	</li>
-	<li class="nav-item"><a class="nav-link" href="#">一级目录3</a></li>
--->
-
     <!-- core JavaScript
     ================================================== -->
-    <script src="{% static 'bootstrap-treeview-1.2.0/jquery.js' %}"></script>
+    <script src="{% static 'bootstrap-4.1.1/js/vendor/jquery-3.3.1.min.js' %}"></script>
+	<script src="{% static 'jsTree/jstree.min.js' %}"></script>
     <script src="{% static 'bootstrap-4.1.1/js/vendor/popper.min.js' %}"></script>
     <script src="{% static 'bootstrap-4.1.1/js/bootstrap.min.js' %}"></script>
 	<script type="text/javascript">
-		function createNode(data){
-			node = ''
-			for(var i=0; i < data.length; i++){
-				if(data[i]["children"]){
-					node += '<li class="nav-item"><a class="nav-link" href="#'+data[i]["id"]+ '" data-toggle="collapse">'+data[i]["text"]+'</a><ul id="'+data[i]["id"]+'" class="nav flex-column collapse">'
-					node += createNode(data[i]["children"]);
-					node += '</ul></li>'
-				}
-				else{
-					node += '<li class="nav-item"><a class="nav-link" href="{% url "blog:list_category" "000001001001" %}">'+data[i]["text"]+'</a></li>'
+	$(function () {
+		$("#category").jstree({
+			'core':{
+				'data':{
+					"url":"{% url 'blog:get_category_data' %}",
+					"dataType":"json"
 				}
 			}
-			return node;
-		}
-		$(document).ready(function () {
-			$.get("{% url 'blog:get_category_data' %}", function(data){
-				var node_str = createNode(data);
-				$("#category").append('<ul class="nav flex-column">'+node_str+'</ul>');
-			})
 		});
+		$("#category").on("changed.jstree", function(e, data){
+			console.log("The selected nodes are:");
+			var url = "{% url 'blog:list_category' '000' %}"
+			var id = data.selected;
+			console.log(id);
+			window.parent.main.location.href = url.replace('000',id);
+		});
+	});
     </script>
   </body>
 </html>
