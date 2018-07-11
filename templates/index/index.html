@@ -10,12 +10,9 @@
     <title>Django应用</title>
 
     {% load staticfiles %}
-	<!-- Bootstrap core CSS -->
+	<!-- core CSS -->
 	<link href="{% static 'bootstrap-4.1.1/css/bootstrap.min.css' %}" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
     <link href="{% static 'bootstrap-4.1.1/css/jumbotron.css' %}" rel="stylesheet">
-	  
 	<link href="{% static 'other/css/index.css' %}" rel="stylesheet">
   </head>
 
@@ -29,23 +26,6 @@
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">首页 <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">博客</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">StockAns</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">系统管理</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">基本信息</a>
-              <a class="dropdown-item" href="#">目录管理</a>
-              <a class="dropdown-item" href="#">权限管理</a>
-            </div>
-          </li>
         </ul>
       </div>
 	  <div id="login">
@@ -94,9 +74,7 @@
       <p>&copy; 向着太阳&nbsp;Email:2463772128@qq.com</p>
     </footer>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- core JavaScript -->
     <script src="{% static 'bootstrap-4.1.1/js/vendor/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'bootstrap-4.1.1/js/vendor/popper.min.js' %}"></script>
     <script src="{% static 'bootstrap-4.1.1/js/bootstrap.min.js' %}"></script>
@@ -105,21 +83,23 @@
 			node = ''
 			for(var i=0; i < data.length; i++){
 				if(data[i]["children"]){
-					node += '<li class="nav-item"><a class="nav-link" href="#'+data[i]["id"]+ '" data-toggle="collapse">'+data[i]["text"]+'</a><ul id="'+data[i]["id"]+'" class="nav flex-column collapse">'
+					node += '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="'+data[i]["href"]+'"  id="'+data[i]["id"]+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+data[i]["text"]+'</a><div class="dropdown-menu" aria-labelledby="'+data[i]["id"]+'">'
 					node += createNode(data[i]["children"]);
-					node += '</ul></li>'
+					node += '</div></li>'
+				}
+				else if (data[i]["id"].length == 3){
+					node += '<li class="nav-item"><a class="nav-link" href="'+data[i]["href"]+'">'+data[i]["text"]+'</a></li>'
 				}
 				else{
-					node += '<li class="nav-item"><a class="nav-link" href="#">'+data[i]["text"]+'</a></li>'
+					node += '<a class="dropdown-item" href="'+data[i]["href"]+'">'+data[i]["text"]+'</a>'
 				}
 			}
 			return node;
 		}
 		$(document).ready(function () {
 			$.get("{% url 'info:get_menu_data' %}", function(data){
-				console.log(data);
-//				var node_str = createNode(data);
-//				$("#category").append('<ul class="nav flex-column">'+node_str+'</ul>');
+				var node_str = createNode(data);
+				$(".navbar-nav").append(node_str);
 			})
 		});
     </script>

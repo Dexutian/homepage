@@ -1,5 +1,6 @@
 from blog.models import Category
-from info.models import Menu
+from info.models import Menu as Info_Menu
+from stock.models import Menu as Stock_Menu
 
 def get_category(category_slug):
     node = {}
@@ -13,15 +14,28 @@ def get_category(category_slug):
         node.update({"children": children_category_dict_list})
     return node
 
-def get_menu(menu_slug):
+def get_info_menu(menu_slug):
     node = {}
-    menu_object = Menu.objects.get(slug=menu_slug)
+    menu_object = Info_Menu.objects.get(slug=menu_slug)
     node = {"id": menu_object.slug, "text": menu_object.name, "href":menu_object.href}
     children_menu_set = menu_object.menu_set.all()
     if children_menu_set:
         children_menu_dict_list = []
         for children_menu in children_menu_set:
             print(children_menu.slug)
-            children_menu_dict_list.append(get_menu(children_menu.slug))
+            children_menu_dict_list.append(get_info_menu(children_menu.slug))
+        node.update({"children": children_menu_dict_list})
+    return node
+
+def get_stock_menu(menu_slug):
+    node = {}
+    menu_object = Stock_Menu.objects.get(slug=menu_slug)
+    node = {"id": menu_object.slug, "text": menu_object.name, "href":menu_object.href}
+    children_menu_set = menu_object.menu_set.all()
+    if children_menu_set:
+        children_menu_dict_list = []
+        for children_menu in children_menu_set:
+            print(children_menu.slug)
+            children_menu_dict_list.append(get_stock_menu(children_menu.slug))
         node.update({"children": children_menu_dict_list})
     return node

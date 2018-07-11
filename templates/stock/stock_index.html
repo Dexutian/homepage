@@ -1,0 +1,52 @@
+{% extends "stock/stock_base.html" %}
+{% block title %}StockAns{% endblock %}
+{% block content %}
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark"> <a class="navbar-brand" href="#">StockAns</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+    </ul>
+  </div>
+</nav>
+<main role="main" style="margin-top: 80px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-12">
+        <iframe name='stock_container' id="stock_container" frameborder="0" ></iframe>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+{% block footer %}
+<footer class="container">
+  <p>&copy; 向着太阳&nbsp;Email:2463772128@qq.com</p>
+</footer>
+{% endblock %}
+{% block jsadded %} 
+<script type="text/javascript">
+	function createNode(data){
+		node = ''
+		for(var i=0; i < data.length; i++){
+			if(data[i]["children"]){
+				node += '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="'+data[i]["href"]+'" target="stock_container" id="'+data[i]["id"]+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+data[i]["text"]+'</a><div class="dropdown-menu" aria-labelledby="'+data[i]["id"]+'">'
+				node += createNode(data[i]["children"]);
+				node += '</div></li>'
+			}
+			else if (data[i]["id"].length == 3){
+				node += '<li class="nav-item"><a class="nav-link" href="'+data[i]["href"]+'" target="stock_container">'+data[i]["text"]+'</a></li>'
+			}
+			else{
+				node += '<a class="dropdown-item" href="'+data[i]["href"]+'" target="stock_container">'+data[i]["text"]+'</a>'
+			}
+		}
+		return node;
+	}
+	$(document).ready(function () {
+		$.get("{% url 'stock:get_menu_data' %}", function(data){
+			var node_str = createNode(data);
+			$(".navbar-nav").append(node_str);
+		})
+	});
+</script> 
+{% endblock %} 

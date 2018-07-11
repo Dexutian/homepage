@@ -19,15 +19,14 @@
   <body>
 	  <div class="container-fluid">
 		  <div class="row">
-			  <div class="col-2" id="category">
+			  <div class="col-md-2 col-12" id="category">
 		  	  </div>
-			  <div class="col-10">
+			  <div class="col-md-10 col-12">
 				   <iframe name='main' id="iframepage" frameborder="0" ></iframe>
 			  </div>
 		  </div>
 	  </div>
-    <!-- core JavaScript
-    ================================================== -->
+    <!-- core JavaScript -->
     <script src="{% static 'bootstrap-4.1.1/js/vendor/jquery-3.3.1.min.js' %}"></script>
 	<script src="{% static 'jsTree/jstree.min.js' %}"></script>
     <script src="{% static 'bootstrap-4.1.1/js/vendor/popper.min.js' %}"></script>
@@ -43,10 +42,8 @@
 			}
 		});
 		$("#category").on("changed.jstree", function(e, data){
-			console.log("The selected nodes are:");
 			var url = "{% url 'blog:list_category' '000' %}"
 			var id = data.selected;
-			console.log(id);
 			window.parent.main.location.href = url.replace('000',id);
 		});
 	});

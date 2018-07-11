@@ -1,0 +1,14 @@
+@charset "utf-8";
+/* CSS Document */
+div{
+	border: 1px solid #F50C10;
+	margin: 0;
+	padding: 0;
+}
+/*td{
+	vertical-align: middle!important;
+	padding: 9px!important;
+}
+.table-bordered td{
+	border: 1px solid #000; /* 整体表格边框 */
+}*/

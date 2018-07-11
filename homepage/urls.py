@@ -32,5 +32,6 @@ urlpatterns = [
     path('auth/', include(auth_patterns)),
     path('blog/', include("blog.urls")),
     path('info/', include("info.urls")),
+    path('stock/', include("stock.urls")),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
