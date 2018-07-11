@@ -1,16 +1,22 @@
 {% extends "stock/stock_base.html" %}
 {% block title %}StockAns{% endblock %}
+{% block cssadded %}
+{% load staticfiles %}
+<link href="{% static 'other/css/stock_index.css' %}" rel="stylesheet">
+{% endblock %}
 {% block content %}
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark"> <a class="navbar-brand" href="#">StockAns</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-    <ul class="navbar-nav mr-auto">
-    </ul>
-  </div>
-</nav>
-<main role="main" style="margin-top: 80px;">
-  <div class="container">
-    <div class="row">
+<main role="main">
+  <div class="container-fluid">
+    <div id="stock_nav" class="row">
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark"> <a class="navbar-brand" href="{% url 'stock:name' %}" target="stock_container">StockAns</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <ul class="navbar-nav mr-auto">
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div id="data_div" class="row">
       <div class="col-md-12 col-12">
         <iframe name='stock_container' id="stock_container" frameborder="0" ></iframe>
       </div>

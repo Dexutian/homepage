@@ -32,11 +32,12 @@ class Name(models.Model):
 	path = models.CharField(max_length = 50, null=True)
 	fupdatetime = models.DateField(null=True)
 
-	class Meta:
-		verbose_name = "股票名称"
-		verbose_name_plural = "股票名称"
+	def __str__(self):
+		return self.stockabb
 
 	class Meta:
 		permissions = (
 			('views_name_manage', '名称管理'),
 		)
+		verbose_name = "股票名称"
+		verbose_name_plural = "股票名称"

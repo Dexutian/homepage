@@ -24,7 +24,7 @@
   </table>
   {% endif %} </div>
 <div id="name_list">
-  <table class="table table-hover table-bordered" style="text-align:right; width: 90%; line-height: 50%; font-size: 100%;" align="center">
+  <table class="table table-hover table-bordered" align="center">
     <thead>
       <tr>
         <td>序号</td>
@@ -60,8 +60,8 @@
       </tbody>
     
   </table>
-  <div id="remark" align="center" style="font-size: 95%; margin-top: 7px;"><span>注：上交所SS股票股本单位为（万股），深交所SZ股票股本单位为（股）</span></div>
-  <div id="paginator" class="pagination-simple" style="font-size: 95%; margin-top: 7px;" align="center"> 
+  <div id="remark" align="center"><span>注：上交所SS股票股本单位为（万股），深交所SZ股票股本单位为（股）</span></div>
+  <div id="paginator" class="pagination-simple" align="center"> 
     <!-- 如果当前页还有上一页，显示一个上一页的按钮 --> 
     {% if stocknames.has_previous %} <a href="?page={{ stocknames.previous_page_number }}">上一页</a> {% endif %} 
     <!-- 显示当前页面信息 --> 
@@ -69,7 +69,7 @@
     <!-- 如果当前页还有下一页，显示一个下一页的按钮 --> 
     {% if stocknames.has_next %} <a href="?page={{ stocknames.next_page_number }}">下一页</a> {% endif %}
     &nbsp;
-    <input type="text" class="page_num" style="width:40px; height: 20px;" />
+    <input type="text" class="page_num" />
     <span>&nbsp;页</span>
     <input class="page_btn" type="button" value="跳转" onclick="page_change()" />
   </div>

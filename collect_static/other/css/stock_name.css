@@ -1,14 +1,34 @@
 @charset "utf-8";
 /* CSS Document */
+html, body{
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-size: 95%;
+	vertical-align: middle;
+}
 div{
-	border: 1px solid #F50C10;
 	margin: 0;
 	padding: 0;
 }
-/*td{
+#upload, #name_list, #file_list{
+	margin-top: 5px;
+	margin-left: 5px;
+}
+.table-bordered{
+	width: 99%;
+	line-height: 40%;
+}
+.table-bordered thead{
+	text-align: center;
+}
+.table-bordered tbody{
+	text-align: right;
+}
+/* style="text-align:right; width: 90%; line-height: 50%; font-size: 100%;"*/
+/*
+td{
 	vertical-align: middle!important;
 	padding: 9px!important;
 }
-.table-bordered td{
-	border: 1px solid #000; /* 整体表格边框 */
-}*/
+*/
