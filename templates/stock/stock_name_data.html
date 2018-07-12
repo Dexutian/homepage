@@ -1,0 +1,81 @@
+{% extends "stock/stock_base.html" %}
+{% block title %}股票名称{% endblock %}
+{% block cssadded %}
+{% load staticfiles %}
+<link href="{% static 'other/css/stock_name.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div id="name_list">
+  <div id="name_table">
+    <div>
+      <label><span>股票代码：</span></label>
+      <input type="text" id="stockcode">
+      <input type="button" value="搜索" onClick="search()" />
+    </div>
+    <table class="table table-hover table-bordered" align="center">
+      <thead>
+        <tr>
+          <td>序号</td>
+          <td>公司代码</td>
+          <td>公司简称</td>
+          <td>交易所代码</td>
+          <td>股票类型</td>
+          <td>股票代码</td>
+          <td>股票简称</td>
+          <td>挂牌日期</td>
+          <td>总股本</td>
+          <td>流通股本</td>
+          <td>所属行业</td>
+        </tr>
+      </thead>
+      <tbody>
+      
+      {% for name in stocknames %}
+      <tr>
+        <td>{{ name.id }}</td>
+        <td>{{ name.companycode }}</td>
+        <td>{{ name.companyabb }}</td>
+        <td>{{ name.stockexchangeno }}</td>
+        <td>{{ name.stockstyle }}</td>
+        <td>{{ name.stockcode }}</td>
+        <td>{{ name.stockabb }}</td>
+        <td>{{ name.listingdate }}</td>
+        <td>{{ name.generalcapital }}</td>
+        <td>{{ name.circulatingcapital }}</td>
+        <td>{{ name.bysector }}</td>
+      </tr>
+      {% endfor %}
+        </tbody>
+      
+    </table>
+  </div>
+  <div id="remark" align="center"><span>注：上交所SS股票股本单位为（万股），深交所SZ股票股本单位为（股）</span></div>
+  <div id="paginator" class="pagination-simple" align="center"> 
+    <!-- 如果当前页还有上一页，显示一个上一页的按钮 --> 
+    {% if stocknames.has_previous %} <a href="?page={{ stocknames.previous_page_number }}">上一页</a> {% endif %} 
+    <!-- 显示当前页面信息 --> 
+    <span class="current">第 {{ stocknames.number }} 页 / 共 {{ stocknames.paginator.num_pages }} 页</span> 
+    <!-- 如果当前页还有下一页，显示一个下一页的按钮 --> 
+    {% if stocknames.has_next %} <a href="?page={{ stocknames.next_page_number }}">下一页</a> {% endif %}
+    &nbsp;
+    <input type="text" class="page_num" />
+    <span>&nbsp;页</span>
+    <input class="page_btn" type="button" value="跳转" onclick="page_change()" />
+  </div>
+</div>
+{% endblock %}
+{% block jsadded %} 
+<script type="text/javascript">
+function page_change(){
+	var page_num = document.getElementsByClassName("page_num").item(0).value;
+	window.location.href = "?page=" + page_num;
+	}
+function search(){
+	var stockcode = document.getElementById("stockcode").value;
+	var url = "{% url 'stock:name_data' %}" + stockcode + "/";
+//	window.parent.main.location.href = url + stockcode + "/";
+	console.log(url);
+	
+}
+</script> 
+{% endblock %}

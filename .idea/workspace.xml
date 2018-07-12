@@ -2,13 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5dcdd06e-5508-4beb-9e08-3afdedc5ac1a" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/collect_static/other/css/stock_index.css" beforeDir="false" afterPath="$PROJECT_DIR$/collect_static/other/css/stock_index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/collect_static/other/css/stock_name.css" beforeDir="false" afterPath="$PROJECT_DIR$/collect_static/other/css/stock_name.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stock/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/stock/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/media/stockname/360base.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stock/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/stock/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stock/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stock/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/stock/stock_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/stock/stock_index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/stock/stock_name.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/stock/stock_name.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/stock/stock_name.html" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,11 +21,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/stock/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+            <state relative-caret-position="611">
+              <caret line="126" column="49" selection-start-line="126" selection-start-column="49" selection-end-line="126" selection-end-column="49" />
+              <folding>
+                <element signature="e#0#35#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/stock/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="209">
+              <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -77,10 +91,10 @@
         <option value="$PROJECT_DIR$/info/views.py" />
         <option value="$PROJECT_DIR$/stock/admin.py" />
         <option value="$PROJECT_DIR$/lib/extend.py" />
-        <option value="$PROJECT_DIR$/stock/urls.py" />
         <option value="$PROJECT_DIR$/lib/manage_stock_name.py" />
-        <option value="$PROJECT_DIR$/stock/views.py" />
         <option value="$PROJECT_DIR$/stock/models.py" />
+        <option value="$PROJECT_DIR$/stock/views.py" />
+        <option value="$PROJECT_DIR$/stock/urls.py" />
       </list>
     </option>
   </component>
@@ -94,8 +108,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="10" />
-    <option name="y" value="276" />
+    <option name="x" value="-64" />
+    <option name="y" value="123" />
     <option name="width" value="1278" />
     <option name="height" value="626" />
   </component>
@@ -136,14 +150,15 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\pycode\env_python3.6.5\homepage\stock" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\pycode\env_python3.6.5\homepage\lib" />
       <recent name="F:\pycode\env_python3.6.5\homepage\blog\templatetags" />
       <recent name="F:\pycode\env_python3.6.5\homepage\blog" />
       <recent name="F:\pycode\env_python3.6.5\homepage\templatetags\blog" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\pycode\env_python3.6.5\homepage\templates\stock" />
+      <recent name="F:\pycode\env_python3.6.5\homepage\stock" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -196,7 +211,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1456" height="916" extended-state="6" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
@@ -205,7 +220,7 @@
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3287841" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26866764" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.3058637" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -445,13 +460,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blog/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" selection-start-line="1" selection-end-line="1" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/homepage/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="646">
@@ -471,9 +479,6 @@
     <entry file="file://$PROJECT_DIR$/info/views.py" />
     <entry file="file://$PROJECT_DIR$/lib/manage_stock_name.py" />
     <entry file="file://$PROJECT_DIR$/stock/admin.py" />
-    <entry file="file://$PROJECT_DIR$/stock/apps.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/blog/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
@@ -488,13 +493,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stock/urls.py">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/templates/stock/stock_name_file.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-596">
+          <caret line="25" column="2" selection-start-line="25" selection-start-column="2" selection-end-line="25" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blog/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" selection-start-line="1" selection-end-line="1" selection-end-column="36" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stock/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+        <state relative-caret-position="611">
+          <caret line="126" column="49" selection-start-line="126" selection-start-column="49" selection-end-line="126" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stock/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
         </state>
       </provider>
     </entry>

@@ -15,9 +15,15 @@ div{
 	margin-top: 5px;
 	margin-left: 5px;
 }
+#name_table, #remark{
+	margin: 0;
+	padding: 0;
+}
 .table-bordered{
 	width: 99%;
 	line-height: 40%;
+	margin: 0;
+	padding: 0;
 }
 .table-bordered thead{
 	text-align: center;
@@ -25,10 +31,10 @@ div{
 .table-bordered tbody{
 	text-align: right;
 }
-/* style="text-align:right; width: 90%; line-height: 50%; font-size: 100%;"*/
-/*
-td{
-	vertical-align: middle!important;
-	padding: 9px!important;
+#paginator{
+	margin-top: 5px;
 }
-*/
+.page_num{
+	width: 40px;
+	height: 22px;
+}
