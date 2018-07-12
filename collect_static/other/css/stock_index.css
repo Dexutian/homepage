@@ -26,6 +26,9 @@ footer{
 	margin: 0;
 	padding: 0;
 }
+.navbar{
+	height: 7.5%;
+}
 #data_div{
 	height: 92.5%;
 	margin: 0;

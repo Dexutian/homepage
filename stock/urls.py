@@ -10,4 +10,5 @@ urlpatterns = [
     path('upload_name_file', views.upload_name_file, name='upload_name_file'),
     path('update_name/', views.update_name, name='update_name'),
     path('name_data/', views.name_data, name='name_data'),
+    re_path('name_data/(?P<stockcode>[0-9]{1,6})/', views.name_data_by_code, name='name_data_by_code'),
 ]

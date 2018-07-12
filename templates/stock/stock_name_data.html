@@ -7,7 +7,7 @@
 {% block content %}
 <div id="name_list">
   <div id="name_table">
-    <div>
+    <div id="name_search">
       <label><span>股票代码：</span></label>
       <input type="text" id="stockcode">
       <input type="button" value="搜索" onClick="search()" />
@@ -73,7 +73,7 @@ function page_change(){
 function search(){
 	var stockcode = document.getElementById("stockcode").value;
 	var url = "{% url 'stock:name_data' %}" + stockcode + "/";
-//	window.parent.main.location.href = url + stockcode + "/";
+	window.location.href = url;
 	console.log(url);
 	
 }

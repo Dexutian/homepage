@@ -125,3 +125,20 @@ def name_data(request):
 	except EmptyPage:
 		name_list = paginator.page(paginator.num_pages)
 	return render(request, 'stock/stock_name_data.html',{ 'stocknames':name_list})
+
+def name_data_by_code(request, stockcode):
+	'''
+	股票名称数据页，根据股票代码查询数据显示
+	:param request:
+	:return:
+	'''
+	names = Name.objects.filter(stockcode__startswith=stockcode)
+	paginator = Paginator(names, 20)
+	page = request.GET.get('page')
+	try:
+		name_list = paginator.page(page)
+	except PageNotAnInteger:
+		name_list = paginator.page(1)
+	except EmptyPage:
+		name_list = paginator.page(paginator.num_pages)
+	return render(request, 'stock/stock_name_data.html',{ 'stocknames':name_list})
