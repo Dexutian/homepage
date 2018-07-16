@@ -41,3 +41,26 @@ class Name(models.Model):
 		)
 		verbose_name = "股票名称"
 		verbose_name_plural = "股票名称"
+
+class pricedaily(models.Model):
+	date = models.DateField(null=True)
+	tclose = models.FloatField(null=True)
+	high = models.FloatField(null=True)
+	low = models.FloatField(null=True)
+	topen = models.FloatField(null=True)
+	lclose = models.FloatField(null=True)
+	chg = models.FloatField(null=True)
+	pchg = models.FloatField(null=True)
+	voturnover = models.FloatField(null=True)
+	vaturnover = models.FloatField(null=True)
+	stockname = models.ForeignKey(Name, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.stockname
+
+	class Meta:
+		permissions = (
+			('views_price_data_manage', '价格数据管理'),
+		)
+		verbose_name = '每日价格'
+		verbose_name_plural = '每日价格'

@@ -5,6 +5,7 @@ from django.conf import settings
 import json, glob, os, logging
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Max, Min, Count
 
 from lib.extend import get_stock_menu
 from lib.manage_stock_name import get_excel_data_dict, update_name_use_dict
@@ -142,3 +143,20 @@ def name_data_by_code(request, stockcode):
 	except EmptyPage:
 		name_list = paginator.page(paginator.num_pages)
 	return render(request, 'stock/stock_name_data.html',{ 'stocknames':name_list})
+
+def pricedaily_data(request):
+	'''
+	每日股票价格数据文件
+	:param request:
+	:return:
+	'''
+	stock = Name.objects.all().annotate(max_date=Max("pricedaily__date"), min_date=Min("pricedaily__date"))
+	paginator = Paginator(stock, 20)
+	page = request.GET.get('page')
+	try:
+		stock_list = paginator.page(page)
+	except PageNotAnInteger:
+		stock_list = paginator.page(1)
+	except EmptyPage:
+		stock_list = paginator.page(paginator.num_pages)
+	return render(request, 'stock/stock_pricedaily_data.html',{'stocks':stock_list})

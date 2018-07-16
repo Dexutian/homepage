@@ -38,3 +38,15 @@ div{
 	width: 40px;
 	height: 22px;
 }
+/*stock_pricedaily_data.html*/
+#time, #s_operator, #p_operator{
+	float: left;
+	margin-right: 20px;
+}
+.progress{
+	display: none;
+	margin-bottom: 5px;
+}
+.choice{
+	zoom: 80%;
+}
