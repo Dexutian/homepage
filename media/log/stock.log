@@ -1,15 +1,4 @@
-2018-07-12 19:08:15,324 - stock.views - INFO - no files for upload!
-2018-07-12 19:08:24,307 - stock.views - INFO - uploading file type is not supported!
-2018-07-12 19:08:43,202 - stock.views - INFO - F:\pycode\env_python3.6.5\homepage\media/stockname\A股.xlsx---删除成功
-2018-07-12 19:08:57,317 - stock.views - INFO - F:\pycode\env_python3.6.5\homepage\media/stockname\A股列表.xlsx---删除成功
-2018-07-12 19:09:03,840 - stock.views - INFO - A股.xlsx上传成功！
-2018-07-12 19:09:43,712 - stock.views - INFO - A股列表.xlsx---上传成功！
-2018-07-12 19:09:47,755 - stock.views - INFO - 成功更新0数据！
-2018-07-12 19:09:53,962 - stock.views - INFO - 成功更新0数据！
-2018-07-12 19:54:58,754 - stock.views - INFO - F:\pycode\env_python3.6.5\homepage\media/stockname\A股.xlsx---删除成功
-2018-07-12 19:55:14,393 - stock.views - INFO - no files for upload!
-2018-07-12 19:55:27,394 - stock.views - INFO - A股.xlsx---上传成功！
-2018-07-12 19:59:30,955 - stock.views - INFO - F:\pycode\env_python3.6.5\homepage\media/stockname\A股.xlsx---删除成功
-2018-07-12 20:00:16,216 - stock.views - INFO - F:\pycode\env_python3.6.5\homepage\media/stockname\A股列表.xlsx---删除成功
-2018-07-12 20:01:12,060 - stock.views - INFO - A股.xlsx---上传成功！
-2018-07-12 20:01:17,451 - stock.views - INFO - A股列表.xlsx---上传成功！
+2018-07-17 18:48:58,278 - stock.views - INFO - 600000
+2018-07-17 18:48:58,489 - stock.views - INFO - 600004
+2018-07-17 20:47:27,100 - stock.views - INFO - 600000
+2018-07-17 20:47:27,303 - stock.views - INFO - 600004

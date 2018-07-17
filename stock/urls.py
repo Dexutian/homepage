@@ -13,4 +13,6 @@ urlpatterns = [
     re_path('name_data/(?P<stockcode>[0-9]{1,6})/', views.name_data_by_code, name='name_data_by_code'),
     #每日股票数据
     path('pricedaily_data/',views.pricedaily_data, name='pricedaily_data'),
+    path('download_pricedaily_csv/', views.download_pricedaily_csv, name='download_pricedaily_csv'),
+    path('progress/', views.progress, name='progress'),
 ]

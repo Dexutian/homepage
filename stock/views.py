@@ -6,9 +6,13 @@ import json, glob, os, logging
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Max, Min, Count
+import time
 
 from lib.extend import get_stock_menu
 from lib.manage_stock_name import get_excel_data_dict, update_name_use_dict
+from lib.pricedaily_csv import download_pricedaily_csv
+from lib.pystockdata import Download_HistoryStock
+
 from stock.models import Menu,Name
 
 # 生成logger
@@ -19,6 +23,11 @@ handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
+
+#进度条数值
+per_downloadcsv_progress = 0
+per_deletecsv_progress = 0
+per_update_price_progress = 0
 
 # Create your views here.
 def index(request):
@@ -160,3 +169,59 @@ def pricedaily_data(request):
 	except EmptyPage:
 		stock_list = paginator.page(paginator.num_pages)
 	return render(request, 'stock/stock_pricedaily_data.html',{'stocks':stock_list})
+
+@csrf_exempt
+def progress(request):
+	type = request.POST.get('type')
+	if type == "download_pricedaily_data":
+		return HttpResponse(str(per_downloadcsv_progress))
+	return HttpResponse(str(0))
+
+@csrf_exempt
+def download_pricedaily_csv(request):
+	'''
+	下载每日股票价格数据文件
+	:param request:
+	:return:
+	'''
+	# 请求方法为POST时，进行处理
+	if request.method == "POST":
+		# 1.获取前端传送的公共信息，初始化进度
+		dm = request.POST.get('dm')
+		start_date = ''.join(request.POST.get('start_date').split('-'))
+		end_date = ''.join(request.POST.get('end_date').split('-'))
+		download_path = os.path.join(settings.MEDIA_ROOT, 'pricedaily_csv')
+		global per_downloadcsv_progress
+		per_downloadcsv_progress = 0
+		i = 0
+
+		# 2.获取股票代码列表
+		code_list = []
+		if dm == 'p':
+			code_list = Name.objects.values_list('stockcode', flat=True)
+		if dm == 's':
+			companycode = request.POST.get('stockcode')
+			code_list = json.loads(companycode)
+		nlen = len(code_list)
+
+		# # 4.下载股票数据文件,更新数据库记录
+		for temp_code in code_list:
+			stockexchangeno = Name.objects.get(stockcode=temp_code).stockexchangeno
+			# download = download_pricedaily_csv(temp_code, stockexchangeno, start_date, end_date, download_path)
+			download = Download_HistoryStock(temp_code, stockexchangeno, start_date, end_date, download_path)
+			download.run()
+			Name.objects.filter(stockcode=temp_code).update(
+				filename=temp_code+'.csv',
+				startdate=request.POST.get('start_date'),
+				enddate=request.POST.get('end_date'),
+				fupdatetime=datetime.now().strftime("%Y-%m-%d"),
+			)
+
+			i += 1
+			per_downloadcsv_progress = int((i / nlen) * 100)
+			msg = '股票：' + temp_code + '，' + start_date + '-' + end_date + '，历史数据文件记录更新成功！'
+			logger.info(temp_code)
+
+			time.sleep(0.2)
+
+	return HttpResponse(None)

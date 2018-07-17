@@ -29,7 +29,6 @@ class Name(models.Model):
 	filename = models.CharField(max_length = 10, null=True)
 	startdate = models.DateField(null = True)
 	enddate = models.DateField(null=True)
-	path = models.CharField(max_length = 50, null=True)
 	fupdatetime = models.DateField(null=True)
 
 	def __str__(self):
