@@ -109,11 +109,11 @@ function getprogressnum(tp){
 		}
 	})
 }
-function startprogress(){
+function startprogress(tp){
 	$(".progress").css("display", "block");
 	$(".progress-bar").css("width","0%");
 	document.getElementById("numprogress").innerHTML = "0%";
-	var timer=self.setInterval("getprogressnum()",100);
+	var timer=self.setInterval(getprogressnum,60,tp);
 	}
 $(document).ready(function(){
 	$(".downloadcsv").click(function(){

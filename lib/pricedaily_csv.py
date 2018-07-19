@@ -1,3 +1,4 @@
+import requests
 import os, logging
 from django.conf import settings
 
@@ -10,7 +11,10 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-class download_pricedaily_csv(object):
+class download_pricedaily_file(object):
+    '''
+    下载每日价格数据文件
+    '''
     def __init__(self, code, stockexchangeno, start_date, end_date, download_path):
         self.code = code
         self.stockexchangeno = stockexchangeno

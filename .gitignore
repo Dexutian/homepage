@@ -6,3 +6,6 @@ __pycache__/
 *.$py.class
 *.xls
 *.xlsx
+*.csv
+*.log
+*.ico

@@ -7,11 +7,11 @@ from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Max, Min, Count
 import time
+from datetime import datetime
 
 from lib.extend import get_stock_menu
 from lib.manage_stock_name import get_excel_data_dict, update_name_use_dict
-from lib.pricedaily_csv import download_pricedaily_csv
-from lib.pystockdata import Download_HistoryStock
+from lib.pricedaily_csv import download_pricedaily_file
 
 from stock.models import Menu,Name
 
@@ -207,8 +207,7 @@ def download_pricedaily_csv(request):
 		# # 4.下载股票数据文件,更新数据库记录
 		for temp_code in code_list:
 			stockexchangeno = Name.objects.get(stockcode=temp_code).stockexchangeno
-			# download = download_pricedaily_csv(temp_code, stockexchangeno, start_date, end_date, download_path)
-			download = Download_HistoryStock(temp_code, stockexchangeno, start_date, end_date, download_path)
+			download = download_pricedaily_file(temp_code, stockexchangeno, start_date, end_date, download_path)
 			download.run()
 			Name.objects.filter(stockcode=temp_code).update(
 				filename=temp_code+'.csv',
@@ -220,8 +219,8 @@ def download_pricedaily_csv(request):
 			i += 1
 			per_downloadcsv_progress = int((i / nlen) * 100)
 			msg = '股票：' + temp_code + '，' + start_date + '-' + end_date + '，历史数据文件记录更新成功！'
-			logger.info(temp_code)
+			logger.info(msg)
 
-			time.sleep(0.2)
+			time.sleep(0.05)
 
 	return HttpResponse(None)
