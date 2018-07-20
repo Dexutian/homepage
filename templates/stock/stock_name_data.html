@@ -73,9 +73,7 @@ function page_change(){
 function search(){
 	var stockcode = document.getElementById("stockcode").value;
 	var url = "{% url 'stock:name_data' %}" + stockcode + "/";
-	window.location.href = url;
-	console.log(url);
-	
+	window.location.href = url;	
 }
 </script> 
 {% endblock %}

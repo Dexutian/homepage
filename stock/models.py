@@ -41,7 +41,7 @@ class Name(models.Model):
 		verbose_name = "股票名称"
 		verbose_name_plural = "股票名称"
 
-class pricedaily(models.Model):
+class Pricedaily(models.Model):
 	date = models.DateField(null=True)
 	tclose = models.FloatField(null=True)
 	high = models.FloatField(null=True)
@@ -63,3 +63,28 @@ class pricedaily(models.Model):
 		)
 		verbose_name = '每日价格'
 		verbose_name_plural = '每日价格'
+
+class Bigexchange(models.Model):
+	date = models.DateField(null=True)
+	zhulj = models.FloatField(null=True)
+	zhuljper = models.FloatField(null=True)
+	chaodd = models.FloatField(null=True)
+	chaoddper = models.FloatField(null=True)
+	dd = models.FloatField(null=True)
+	ddper = models.FloatField(null=True)
+	zd = models.FloatField(null=True)
+	zdper = models.FloatField(null=True)
+	xd = models.FloatField(null=True)
+	xdper = models.FloatField(null=True)
+	stockname = models.ForeignKey(Name, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.stockname
+
+	class Meta:
+		permissions = (
+			('views_dd_data_manage', '大单数据管理'),
+			('views_k_unit_manage', '曲线对比'),
+		)
+		verbose_name = '大单交易'
+		verbose_name_plural = '大单交易'

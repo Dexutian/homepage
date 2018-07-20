@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
 import json, glob, os, logging
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -11,7 +10,8 @@ from datetime import datetime
 
 from lib.extend import get_stock_menu
 from lib.manage_stock_name import get_excel_data_dict, update_name_use_dict
-from lib.pricedaily_csv import download_pricedaily_file
+from lib.pricedaily_csv import download_pricedaily_file, update_pricedaily_file
+from lib.getmoneystream import download_moneystream
 
 from stock.models import Menu,Name
 
@@ -26,8 +26,9 @@ logger.addHandler(handler)
 
 #进度条数值
 per_downloadcsv_progress = 0
-per_deletecsv_progress = 0
 per_update_price_progress = 0
+per_deletecsv_progress = 0
+per_update_dadang_exchange = 0
 
 # Create your views here.
 def index(request):
@@ -170,11 +171,34 @@ def pricedaily_data(request):
 		stock_list = paginator.page(paginator.num_pages)
 	return render(request, 'stock/stock_pricedaily_data.html',{'stocks':stock_list})
 
+def pricedaily_data_by_code(request, stockcode):
+	'''
+	股票每日价格数据页，根据股票代码查询数据显示
+	:param request:
+	:return:
+	'''
+	stock = Name.objects.filter(stockcode__startswith=stockcode)
+	paginator = Paginator(stock, 20)
+	page = request.GET.get('page')
+	try:
+		stock_list = paginator.page(page)
+	except PageNotAnInteger:
+		stock_list = paginator.page(1)
+	except EmptyPage:
+		stock_list = paginator.page(paginator.num_pages)
+	return render(request, 'stock/stock_pricedaily_data.html',{'stocks':stock_list})
+
 @csrf_exempt
 def progress(request):
 	type = request.POST.get('type')
 	if type == "download_pricedaily_data":
 		return HttpResponse(str(per_downloadcsv_progress))
+	if type == "update_pricedaily_data":
+		return HttpResponse(str(per_update_price_progress))
+	if type == "delete_csv_file":
+		return HttpResponse(str(per_deletecsv_progress))
+	if type == "update_dadang_exchange":
+		return HttpResponse(str(per_update_dadang_exchange))
 	return HttpResponse(str(0))
 
 @csrf_exempt
@@ -224,3 +248,178 @@ def download_pricedaily_csv(request):
 			time.sleep(0.05)
 
 	return HttpResponse(None)
+
+@csrf_exempt
+def updatecsv2database(request):
+	'''
+	更新每日股票价格数据文件到数据库
+	:param request:
+	:return:
+	'''
+	# 请求方法为POST时，进行处理
+	if request.method == "POST":
+		# 1.初始化公共信息，初始化进度
+		dm = request.POST.get('dm')
+		is_colname = True
+		col_index = [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+		global per_update_price_progress
+		per_update_price_progress = 0
+		i = 0
+		nlen = 0
+
+		# 2.获取股票文件列表
+		file_list = []
+		if dm == 'p':
+			stockname_list = Name.objects.all()
+			nlen = Name.objects.all().count()
+			for stock in stockname_list:
+				file_name = os.path.join(settings.MEDIA_ROOT, 'pricedaily_csv', stock.filename)
+				file_list.append(file_name)
+		if dm == 's':
+			name_list_0 = request.POST.get('stockname')
+			name_list = json.loads(name_list_0)
+			nlen = len(name_list)
+			for name in name_list:
+				stocks = Name.objects.get(filename=name)
+				file_name = os.path.join(settings.MEDIA_ROOT, 'pricedaily_csv', stocks.filename)
+				file_list.append(file_name)
+
+		# 4.用数据文件更新数据库
+		for file in file_list:
+			de = update_pricedaily_file(file, col_index, is_colname=is_colname)
+			de.run()
+
+			i += 1
+			per_update_price_progress = int((i / nlen) * 100)
+			msg = '文件：' + file + '，' + '数据导入成功！'
+			logger.info(msg)
+
+			time.sleep(0.05)
+
+	return HttpResponse(None)
+
+@csrf_exempt
+def delete_pricedaily_csv(request):
+	'''
+	删除每日股票价格数据文件
+	:param request:
+	:return:
+	'''
+	if request.method == 'POST':
+		# 1.获取前端传递的文件列表
+		dm = request.POST.get("dm")
+		global per_deletecsv_progress
+		per_deletecsv_progress = 0
+		i = 0
+		nlen = 0
+
+		# 2.获取股票文件列表
+		name_list = []
+		if dm == 'p':
+			name_list_origin = Name.objects.values_list('filename', flat=True)
+			name_list = [name for name in name_list_origin if name not in ['', ' ', None]]
+		if dm == 's':
+			name_list_0 = request.POST.get('stockname')
+			name_list = json.loads(name_list_0)
+		nlen = len(name_list)
+
+
+		# 3.删除文件，同时记录删除文件记录数据
+		for name in name_list:
+			file_name = os.path.join(settings.MEDIA_ROOT, 'pricedaily_csv', name)
+			if os.path.isfile(file_name):
+				try:
+					os.remove(file_name)
+					Name.objects.filter(filename=name).update(
+						filename=None,
+						startdate=None,
+						enddate=None,
+						fupdatetime=datetime.now().strftime("%Y-%m-%d"),
+					)
+					msg = '文件：' + name + '，' + '删除成功！'
+				except Exception  as e:
+					msg = '文件：' + name + '，' + '删除错误：' + e
+
+				i += 1
+				per_deletecsv_progress = int((i / nlen) * 100)
+				logger.info(msg)
+
+				time.sleep(0.05)
+
+	return HttpResponse(None)
+
+def dadang_exchange(request):
+	'''
+	大单交易数据首页
+	:param request:
+	:return:
+	'''
+	stock = Name.objects.all().annotate(count=Count("bigexchange__id"),
+											 max_date=Max("bigexchange__date"))
+	paginator = Paginator(stock, 20)
+	page = request.GET.get('page')
+	try:
+		stock_list = paginator.page(page)
+	except PageNotAnInteger:
+		stock_list = paginator.page(1)
+	except EmptyPage:
+		stock_list = paginator.page(paginator.num_pages)
+	return render(request, 'stock/stock_dadang_data.html', {'stocks': stock_list})
+
+@csrf_exempt
+def update_dadang_exchange(request):
+	'''
+	更新大单交易数据
+	:param request:
+	:return:
+	'''
+	# 请求方法为POST时，进行处理
+	if request.method == "POST":
+		# 1.初始化公共信息，初始化进度
+		dm = request.POST.get('dm')
+		global per_update_dadang_exchange
+		per_update_dadang_exchange = 0
+		i = 0
+		nlen = 0
+
+		# 2.获取股票文件列表
+		code_list = []
+		if dm == 'p':
+			code_list_origin = Name.objects.values_list('stockcode', flat=True)
+			code_list = [code for code in code_list_origin if code not in ['', ' ', None]]
+		if dm == 's':
+			code_list_0 = request.POST.get('code_list')
+			code_list = json.loads(code_list_0)
+		nlen = len(code_list)
+
+		#4.用数据文件更新数据库
+		for code in code_list:
+			de = download_moneystream(code)
+			de.run()
+
+			i += 1
+			per_update_dadang_exchange = int((i / nlen) * 100)
+			msg = '股票：' + code + '，' + '大单资金数据导入成功！'
+			logger.info(msg)
+
+			time.sleep(0.05)
+
+	return HttpResponse(None)
+
+def dadang_exchange_by_code(request, stockcode):
+	'''
+	股票大单交易数据，根据股票代码查询数据显示
+	:param request:
+	:return:
+	'''
+	stock = Name.objects.filter(stockcode__startswith=stockcode).annotate(count=Count("bigexchange__id"),
+										max_date=Max("bigexchange__date"))
+	paginator = Paginator(stock, 20)
+	page = request.GET.get('page')
+	try:
+		stock_list = paginator.page(page)
+	except PageNotAnInteger:
+		stock_list = paginator.page(1)
+	except EmptyPage:
+		stock_list = paginator.page(paginator.num_pages)
+	return render(request, 'stock/stock_dadang_data.html', {'stocks': stock_list})

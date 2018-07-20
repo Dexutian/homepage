@@ -24,15 +24,15 @@
       </div>
       <div id="p_operator">
         <label>批处理操作：</label>
-        <input class="downloadcsv" type="submit" mode="p" value="下载全部文件" />
-        <input id="delete" type="submit" value="删除全部文件" onclick="pupdatecsv()"/>
-        <input id="pupdatedata" type="submit" value="更新全部数据" onclick="pupdatecsv()"/>
+        <input class="downloadcsv" type="button" mode="p" value="下载全部文件" />
+        <input class="deletecsv" type="button" mode="p" value="删除全部文件" />
+        <input class="updatecsv2database" type="button" mode="p" value="更新全部数据" />
       </div>
       <div id="s_operator">
         <label>单处理操作：</label>
         <input class="downloadcsv" type="button" mode="s" value="下载选中文件" />
-        <input class="delete" type="button" value="删除选中文件" onclick="deletefile()" />
-        <input class="update" type="button" value="更新选中数据" onclick="supdatecsv()" />
+        <input class="deletecsv" type="button" mode="s" value="删除选中文件" />
+        <input class="updatecsv2database" type="button" mode="s" value="更新选中数据" />
       </div>
     </div>
     <table class="table table-hover table-bordered">
@@ -53,7 +53,7 @@
       {% if stocks %}
       {% for stock in stocks %}
       <tr>
-        <td class="stock_check"><input class="choice" type="checkbox" value="aa" /></td>
+        <td class="stock_check"><input class="choice" type="checkbox" /></td>
         <td>{{ stock.id }}</td>
         <td>{{ stock.stockcode }}</td>
         <td>{{ stock.stockabb }}</td>
@@ -88,7 +88,10 @@ function page_change(){
 	var page_num = document.getElementsByClassName("page_num").item(0).value;
 	window.location.href = "?page=" + page_num;
 	}
-function search(){	
+function search(){
+		var stockcode = document.getElementById("stockcode").value;
+		var url = "{% url 'stock:pricedaily_data' %}" + stockcode + "/";
+		window.location.href = url;
 }
 function getprogressnum(tp){
 	$.ajax({
@@ -145,7 +148,63 @@ $(document).ready(function(){
 			})
 		}
 		startprogress("download_pricedaily_data")
-	})	
+	})
+	$(".updatecsv2database").click(function(){
+		var mode = $(this).attr("mode");
+		if(mode == "p"){
+				$.ajax({
+					url: "{% url 'stock:updatecsv2database' %}",
+					type: "POST",
+					data: {"dm":"p"},
+					success: function (data) {
+						
+					}
+				})
+		}
+		if(mode == "s"){
+			var chk_value =[];
+			$('input[class="choice"]:checked').each(function(){
+				chk_value.push($(this).parent().nextAll().eq(5).text());
+			});
+			$.ajax({
+				url: "{% url 'stock:updatecsv2database' %}",
+				type: "POST",
+				data: {"dm":"s","stockname":JSON.stringify(chk_value)},
+				success: function (data) {
+					
+				}
+			})
+		}
+		startprogress("update_pricedaily_data")
+	})
+	$(".deletecsv").click(function(){
+		var mode = $(this).attr("mode");
+		if(mode == "p"){
+			$.ajax({
+				url: "{% url 'stock:delete_pricedaily_csv' %}",
+				type: "POST",
+				data: {"dm":"p"},
+				success: function (data) {
+					
+				}
+			})
+		}
+		if(mode == "s"){
+			var chk_value =[]; 
+			$('input[class="choice"]:checked').each(function(){
+				chk_value.push($(this).parent().nextAll().eq(5).text());
+			});
+			$.ajax({
+				url: "{% url 'stock:delete_pricedaily_csv' %}",
+				type: "POST",
+				data: {"dm":"s","stockname":JSON.stringify(chk_value)},
+				success: function (data) {
+					
+				}
+			})
+		}
+		startprogress("delete_csv_file")
+	})
 })
 </script> 
 {% endblock %}

@@ -1,6 +1,7 @@
 import requests
-import os, logging
+import os, logging, csv
 from django.conf import settings
+from stock.models import Name, Pricedaily
 
 # 生成logger
 logger = logging.getLogger(__name__)
@@ -52,6 +53,75 @@ class download_pricedaily_file(object):
             if self.link_check():
                 self.download(self.stockexchangeno, self.start_date, self.end_date)
                 self.msg = '股票：' + self.code + '，' + self.start_date + '-' + self.end_date + '，历史数据文件下载成功！'
+        except Exception as e:
+            print(e)
+        finally:
+            logger.info(self.msg)
+
+class update_pricedaily_file(object):
+    def __init__(self, file_name, col_num, is_colname=True):
+        self.file_name = file_name
+        self.is_colname = is_colname
+        self.col_num = col_num
+        self.msg = ''
+
+    def read_csv_data(self):
+        try:
+            with open(self.file_name, 'r', newline='') as csv_in_file:
+                filereader = csv.reader(csv_in_file, delimiter=',')
+                if self.is_colname:
+                    header = next(filereader)   #跳过表头
+                row_dict = []
+                for row_list in filereader:
+                    row_unit = []
+                    if "None" not in row_list:
+                        for col_index in self.col_num:
+                            row_unit.append(row_list[col_index])
+                        row_dict.append(row_unit)
+                return row_dict
+        except:
+            self.msg = '文件异常！'
+
+    def import_stock_data(self, row_dict):
+        '''
+        data = read_excel_data()
+        股票数据
+        :return:
+        insert_num:插入记录条数
+        '''
+        data_list = []
+        if row_dict:
+            for value in row_dict:
+                data = value
+                stock_obj = Name.objects.get(stockcode=data[1].lstrip("'"))
+                exist_data = stock_obj.pricedaily_set.filter(date=data[0])
+                if not exist_data:
+                    data_unit = Pricedaily(
+                        date = data[0],
+                        tclose = data[2],
+                        high = data[3],
+                        low = data[4],
+                        topen = data[5],
+                        lclose = data[6],
+                        chg = data[7],
+                        pchg = data[8],
+                        voturnover = data[9],
+                        vaturnover = data[10],
+                        stockname = stock_obj,
+                    )
+                    data_list.append(data_unit)
+            Pricedaily.objects.bulk_create(data_list)
+        else:
+            self.msg = '文件没有数据！'
+        insert_num=len(data_list)
+        return insert_num
+
+    def run(self):
+        try:
+            row_dict = self.read_csv_data()
+            if  self.msg != '文件异常！':
+                insert_num = self.import_stock_data(row_dict)
+                self.msg = '成功更新'+str(insert_num)+'条数据！'
         except Exception as e:
             print(e)
         finally:

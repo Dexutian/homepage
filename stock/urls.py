@@ -13,6 +13,13 @@ urlpatterns = [
     re_path('name_data/(?P<stockcode>[0-9]{1,6})/', views.name_data_by_code, name='name_data_by_code'),
     #每日股票数据
     path('pricedaily_data/',views.pricedaily_data, name='pricedaily_data'),
+    re_path('pricedaily_data/(?P<stockcode>[0-9]{1,6})/', views.pricedaily_data_by_code, name='pricedaily_data_by_code'),
     path('download_pricedaily_csv/', views.download_pricedaily_csv, name='download_pricedaily_csv'),
+    path('updatecsv2database/', views.updatecsv2database, name='updatecsv2database'),
+    path('delete_pricedaily_csv/', views.delete_pricedaily_csv, name='delete_pricedaily_csv'),
     path('progress/', views.progress, name='progress'),
+    #大单交易数据
+    path('dadang_exchange/', views.dadang_exchange, name='dadang_exchange'),
+    re_path('dadang_exchange/(?P<stockcode>[0-9]{1,6})/', views.dadang_exchange_by_code, name='dadang_exchange_by_code'),
+    path('update_dadang_exchange/', views.update_dadang_exchange, name='update_dadang_exchange'),
 ]
