@@ -7,7 +7,7 @@ from info.models import Menu
 
 # Create your views here.
 def get_menu_data(request):
-    menu_root = Menu.objects.filter(parent_menu=None).order_by("id")
+    menu_root = Menu.objects.filter(parent_menu=None).order_by("slug")
     data_json = []
     for menu in menu_root:
         data_json.append(get_info_menu(menu.slug))

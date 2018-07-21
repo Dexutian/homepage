@@ -16,12 +16,12 @@
       <thead>
         <tr>
           <td>序号</td>
+          <td>股票代码</td>
+          <td>股票简称</td>
           <td>公司代码</td>
           <td>公司简称</td>
           <td>交易所代码</td>
           <td>股票类型</td>
-          <td>股票代码</td>
-          <td>股票简称</td>
           <td>挂牌日期</td>
           <td>总股本</td>
           <td>流通股本</td>
@@ -33,12 +33,12 @@
       {% for name in stocknames %}
       <tr>
         <td>{{ name.id }}</td>
+        <td><a href="{% url 'stock:graphic' name.stockcode %}" target="_self">{{ name.stockcode }}</a></td>
+        <td>{{ name.stockabb }}</td>
         <td>{{ name.companycode }}</td>
         <td>{{ name.companyabb }}</td>
         <td>{{ name.stockexchangeno }}</td>
         <td>{{ name.stockstyle }}</td>
-        <td>{{ name.stockcode }}</td>
-        <td>{{ name.stockabb }}</td>
         <td>{{ name.listingdate }}</td>
         <td>{{ name.generalcapital }}</td>
         <td>{{ name.circulatingcapital }}</td>

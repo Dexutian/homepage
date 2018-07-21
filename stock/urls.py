@@ -22,4 +22,9 @@ urlpatterns = [
     path('dadang_exchange/', views.dadang_exchange, name='dadang_exchange'),
     re_path('dadang_exchange/(?P<stockcode>[0-9]{1,6})/', views.dadang_exchange_by_code, name='dadang_exchange_by_code'),
     path('update_dadang_exchange/', views.update_dadang_exchange, name='update_dadang_exchange'),
+    #数据可视化
+    re_path('graphic/(?P<code>[0-9]{6})/', views.graphic, name = 'graphic'),
+    path('stock_contrast/', views.stock_contrast, name='stock_contrast'),
+    path('get_stock_code/', views.get_stock_code, name='get_stock_code'),
+    path('get_contrast_data/', views.get_contrast_data, name='get_contrast_data'),
 ]

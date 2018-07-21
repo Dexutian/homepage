@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+<meta charset="utf-8">
+<title>{{ stockcode }}{{ stockabb }}</title>
+</head>
+<body style="height: 100%; margin: 0">
+<div id="container2" style="height: 50%"></div>
+<div id="container1" style="height: 50%"></div>
+{% load staticfiles %} 
+<script type="text/javascript" src="{% static 'echarts/echarts.js' %}"></script> 
+<script type="text/javascript" src="{% static 'bootstrap-4.1.1/js/vendor/jquery-3.3.1.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'bootstrap-4.1.1/js/bootstrap.min.js' %}"></script> 
+<script type="text/javascript">
+var dom1 = document.getElementById("container1");
+var myChart1 = echarts.init(dom1);
+var dom2 = document.getElementById("container2");
+var myChart2 = echarts.init(dom2);
+function splitData(rawData) {
+    var categoryData = [];
+    var values = [];
+	var volumns = [];
+    for (var i = 0; i < rawData.length; i++) {
+        categoryData.push(rawData[i].splice(0, 1)[0]);
+        values.push(rawData[i]);
+		volumns.push(rawData[i][4]);
+    }
+    return {
+        categoryData: categoryData,
+        values: values,
+		volumns: volumns
+    };
+}
+var itemStyle = {
+    normal: {
+    },
+    emphasis: {
+        barBorderWidth: 1,
+        shadowBlur: 5,
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+        shadowColor: 'rgba(0,255,0,1)'
+    }
+};
+
+var data = {{ data_list|safe }};
+var series_data = [];
+var legend_data = [];
+	for(var i=data.length-1; i >= 0; i--){
+		var series_unit = new Object();
+		legend_data.push(data[i]["legend"]);
+		series_unit.name = data[i]["legend"];
+		series_unit.type = 'bar';
+		series_unit.itemStyle = itemStyle;
+		series_unit.data = data[i]["data_unit"];
+		series_data.push(series_unit);
+	}
+
+option1 = {
+	title: {
+        text: '{{ stockcode }}-{{ stockabb }}/DADANG',
+        left: 0
+    },
+	tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross'
+        }
+    },
+	toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+	grid:{
+		top:'7%',
+		left: '3%',
+		right: '3%',
+		height: '73%',
+	},
+	legend:{
+		data:legend_data
+			},
+    xAxis: [
+        {
+            type : 'time',
+			splitNumber:10
+        }
+    ],
+	dataZoom: {
+        show: true,
+        start : 95
+    },
+    yAxis: {},
+    series:series_data
+};
+	
+var k_data = {{ k_data|safe }};
+var data0 = splitData(k_data);
+option2 = {
+	title: {
+        text: '{{ stockcode }}-{{ stockabb }}/K-DATA',
+        left: 0
+    },
+	toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+	tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross'
+        }
+    },
+	axisPointer: {
+            link: {xAxisIndex: 'all'},
+            label: {
+                backgroundColor: '#777'
+            }
+        },
+	grid: [
+            {
+                left: '3%',
+                right: '3%',
+				top: '7%',
+                height: '55%',
+            },
+            {
+                left: '3%',
+                right: '3%',
+                top: '65%',
+                height: '16%',
+            }
+        ],
+    xAxis: [
+			{
+                type: 'category',
+                data: data0.categoryData,
+                scale: true,
+                boundaryGap : false,
+                axisLine: {onZero: false},
+                splitLine: {show: false},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax',
+                axisPointer: {
+                    z: 100
+                }
+            },
+            {
+                type: 'category',
+                gridIndex: 1,
+                data: data0.categoryData,
+                scale: true,
+                boundaryGap : false,
+                axisLine: {onZero: false},
+                axisTick: {show: false},
+                splitLine: {show: false},
+                axisLabel: {show: false},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax'
+            }
+	],
+    yAxis: [
+			{
+                scale: true,
+                splitArea: {
+                    show: true
+                }
+            },
+            {
+                scale: true,
+                gridIndex: 1,
+                splitNumber: 2,
+                axisLabel: {show: false},
+                axisLine: {show: false},
+                axisTick: {show: false},
+                splitLine: {show: false}
+            }
+	],
+	dataZoom: [
+        	{
+                type: 'inside',
+                xAxisIndex: [0, 1],
+                start: 90,
+                end: 100
+            },
+            {
+                show: true,
+                xAxisIndex: [0, 1],
+                type: 'slider',
+                top: '85%',
+                start: 90,
+                end: 100
+            }
+    ],
+    series: [
+		{
+		name: '日K',
+		type: 'candlestick',
+		data: data0.values
+    },
+		{
+		name: 'Volume',
+		type: 'bar',
+		xAxisIndex: 1,
+        yAxisIndex: 1,
+		data: data0.volumns
+	}
+	]
+};
+if (option1 && typeof option1 === "object") {
+    myChart1.setOption(option1, true);
+}
+if (option2 && typeof option2 === "object") {
+    myChart2.setOption(option2, true);
+}
+</script>
+</body>
+</html>

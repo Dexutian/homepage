@@ -6,7 +6,7 @@ from stock.models import Name, Pricedaily
 # 生成logger
 logger = logging.getLogger(__name__)
 logger.setLevel(level=logging.INFO)
-handler = logging.FileHandler(os.path.join(settings.MEDIA_ROOT, 'log', 'download_pricedaily_csv.log'))
+handler = logging.FileHandler(os.path.join(settings.MEDIA_ROOT, 'log', 'pricedaily_csv.log'))
 handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)

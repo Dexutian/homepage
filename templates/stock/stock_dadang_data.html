@@ -1,5 +1,5 @@
 {% extends "stock/stock_base.html" %}
-{% block title %}股票名称{% endblock %}
+{% block title %}股票大单交易数据{% endblock %}
 {% block cssadded %}
 {% load staticfiles %}
 <link href="{% static 'other/css/stock_name.css' %}" rel="stylesheet">
@@ -44,7 +44,7 @@
       <tr>
         <td><input class="choice" type="checkbox" /></td>
         <td>{{ stock.id }}</td>
-        <td><a href="#" target="_blank">{{ stock.stockcode }}</a></td>
+        <td>{{ stock.stockcode }}</td>
         <td>{{ stock.stockabb }}</td>
         <td>{{ stock.count }}</td>
         <td>{{ stock.max_date }}</td>

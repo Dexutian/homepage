@@ -18,7 +18,7 @@ def get_info_menu(menu_slug):
     node = {}
     menu_object = Info_Menu.objects.get(slug=menu_slug)
     node = {"id": menu_object.slug, "text": menu_object.name, "href":menu_object.href}
-    children_menu_set = menu_object.menu_set.all()
+    children_menu_set = menu_object.menu_set.all().order_by("slug")
     if children_menu_set:
         children_menu_dict_list = []
         for children_menu in children_menu_set:
@@ -31,7 +31,7 @@ def get_stock_menu(menu_slug):
     node = {}
     menu_object = Stock_Menu.objects.get(slug=menu_slug)
     node = {"id": menu_object.slug, "text": menu_object.name, "href":menu_object.href}
-    children_menu_set = menu_object.menu_set.all()
+    children_menu_set = menu_object.menu_set.all().order_by("slug")
     if children_menu_set:
         children_menu_dict_list = []
         for children_menu in children_menu_set:

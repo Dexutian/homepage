@@ -1,12 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse,HttpResponseRedirect, Http404
 from django.views.decorators.csrf import csrf_exempt
 import json, glob, os, logging
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Max, Min, Count
 import time
-from datetime import datetime
+from datetime import datetime, date
 
 from lib.extend import get_stock_menu
 from lib.manage_stock_name import get_excel_data_dict, update_name_use_dict
@@ -30,6 +30,16 @@ per_update_price_progress = 0
 per_deletecsv_progress = 0
 per_update_dadang_exchange = 0
 
+class CJsonEncoder(json.JSONEncoder):
+	#自定义时间json序列化格式
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.strftime('%Y-%m-%d %H:%M:%S')
+        elif isinstance(obj, date):
+            return obj.strftime("%Y-%m-%d")
+        else:
+            return json.JSONEncoder.default(self, obj)
+
 # Create your views here.
 def index(request):
     '''
@@ -49,7 +59,7 @@ def get_menu_data(request):
     :return:
     data_json:目录列表数据json序列化
     '''
-    menu_root = Menu.objects.filter(parent_menu=None).order_by("id")
+    menu_root = Menu.objects.filter(parent_menu=None).order_by("slug")
     data_json = []
     for menu in menu_root:
         data_json.append(get_stock_menu(menu.slug))
@@ -177,7 +187,7 @@ def pricedaily_data_by_code(request, stockcode):
 	:param request:
 	:return:
 	'''
-	stock = Name.objects.filter(stockcode__startswith=stockcode)
+	stock = Name.objects.filter(stockcode__startswith=stockcode).annotate(max_date=Max("pricedaily__date"), min_date=Min("pricedaily__date"))
 	paginator = Paginator(stock, 20)
 	page = request.GET.get('page')
 	try:
@@ -423,3 +433,104 @@ def dadang_exchange_by_code(request, stockcode):
 	except EmptyPage:
 		stock_list = paginator.page(paginator.num_pages)
 	return render(request, 'stock/stock_dadang_data.html', {'stocks': stock_list})
+
+@csrf_exempt
+def graphic(request, code):
+	'''
+	个股数据可视化
+	:param request:
+	:param code:
+	:return:
+	'''
+	try:
+		code = str(code)
+	except ValueError:
+		raise Http404("参数格式不正确！")
+	stockname = Name.objects.get(stockcode=code)
+	k_data_query = stockname.pricedaily_set.all().order_by("date").values_list("date", "topen", "tclose", "low", "high", "voturnover")
+
+	series_types = ["chaodd", "dd", "zd", "xd"]
+	data_json = []
+	for type in series_types:
+		data_unit = stockname.bigexchange_set.all().values_list("date", type)
+		data_json.append({"legend": type, "data_unit": list(data_unit)})
+	return render(request, 'stock/stock_graphic.html',
+				  {"stockcode": str(stockname.stockcode), "stockabb": str(stockname.stockabb),
+				   "data_list": json.dumps(data_json, cls=CJsonEncoder), "k_data": json.dumps(list(k_data_query), cls=CJsonEncoder)})
+
+def stock_contrast(request):
+	'''
+	股票数据对比
+	:param request:
+	:return:
+	'''
+	return render(request, 'stock/stock_contrast.html')
+
+@csrf_exempt
+def get_stock_code(request):
+	'''
+	获取需要对比股票的代码和简称
+	:param request:
+	:return:
+	'''
+	q = request.GET['q']
+	names = Name.objects.filter(stockcode__startswith = q)[0:10]
+
+	rejson = []
+	for name in names:
+		rejson.append([name.stockcode,name.stockabb])
+	return HttpResponse(json.dumps(rejson), content_type='application/json')
+
+@csrf_exempt
+def get_contrast_data(request):
+	'''
+	获取对比股票的详细数据
+	:param request:
+	:return:
+	'''
+	output_file = 'F:/pycode/mysite/download_file/json_log.txt'
+	filewriter = open(output_file, 'a+', newline=None)
+	msg = ''
+	line_type = request.GET['line_type']
+	companycode = request.GET['stockcode']
+	code_list = json.loads(companycode)
+	data_json = []
+	for code in code_list:
+		stockname = Name.objects.get(stockcode=code)
+		his_data_set = stockname.pricedaily_set.all().order_by("-date")
+		money_data_set = stockname.bigexchange_set.all().order_by("-date")[0]	#大单资金数据
+		volturnover_data = his_data_set[0]	#成交量数据
+		data_stream = []
+		data_stream.append(str(volturnover_data.date))	#成交量日期
+		data_stream.append(str(volturnover_data.voturnover))	#成交量
+		data_stream.append(str(money_data_set.date))	#大单资金日期
+		data_stream.append(str(money_data_set.zhulj))  #主力净流入量
+		data_stream.append(str(money_data_set.zhuljper))  #主力净流入占比
+		data_stream.append(str(money_data_set.chaodd))  # 超级大单净流入量
+		data_stream.append(str(money_data_set.chaoddper))  #超级大单净流入占比
+		data_stream.append(str(money_data_set.dd))  #大单净流入量
+		data_stream.append(str(money_data_set.ddper))  #大单净流入占比
+		data_stream.append(str(money_data_set.zd))  #中单净流入量
+		data_stream.append(str(money_data_set.zdper))  #中单净流入占比
+		data_stream.append(str(money_data_set.xd))  # 小单净流入量
+		data_stream.append(str(money_data_set.xdper))  #小单净流入占比
+		date_price = []
+		if line_type == 'tclose':
+			for data in his_data_set:
+			    date_price.append([str(data.date),data.tclose])
+		if line_type == 'high':
+			for data in his_data_set:
+				date_price.append([str(data.date),data.high])
+		if line_type == 'low':
+			for data in his_data_set:
+				date_price.append([str(data.date),data.low])
+		if line_type == 'topen':
+			for data in his_data_set:
+				date_price.append([str(data.date),data.topen])
+		if line_type == 'voturnover':
+			for data in his_data_set:
+				date_price.append([str(data.date),data.voturnover])
+		data_json.append({"data_stream":data_stream,"stockcode":stockname.stockcode,"legend":stockname.stockabb, "date_price":date_price})
+	filewriter.write(json.dumps(data_json) + "\n")
+	filewriter.close()
+	return HttpResponse(json.dumps(data_json), content_type='application/json')
