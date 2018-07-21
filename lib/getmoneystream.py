@@ -31,7 +31,7 @@ class download_moneystream(object):
         dcap["phantomjs.page.settings.userAgent"] = (
             "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:21.0) Gecko/20100101 Firefox/21.0"
         )
-        driver = webdriver.PhantomJS(desired_capabilities=dcap)
+        driver = webdriver.PhantomJS(desired_capabilities=dcap, executable_path=os.path.join(settings.MEDIA_ROOT, 'phantomjs.exe'))
         try:
             driver.get(self.download_url)
         except TimeoutException:

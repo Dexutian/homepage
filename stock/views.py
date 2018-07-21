@@ -488,9 +488,6 @@ def get_contrast_data(request):
 	:param request:
 	:return:
 	'''
-	output_file = 'F:/pycode/mysite/download_file/json_log.txt'
-	filewriter = open(output_file, 'a+', newline=None)
-	msg = ''
 	line_type = request.GET['line_type']
 	companycode = request.GET['stockcode']
 	code_list = json.loads(companycode)
@@ -531,6 +528,4 @@ def get_contrast_data(request):
 			for data in his_data_set:
 				date_price.append([str(data.date),data.voturnover])
 		data_json.append({"data_stream":data_stream,"stockcode":stockname.stockcode,"legend":stockname.stockabb, "date_price":date_price})
-	filewriter.write(json.dumps(data_json) + "\n")
-	filewriter.close()
 	return HttpResponse(json.dumps(data_json), content_type='application/json')
