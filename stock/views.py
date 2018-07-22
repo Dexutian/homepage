@@ -126,7 +126,7 @@ def update_name(request):
 			logger.info(file_excel + '---删除成功')
 			msg = "文件删除成功！"
 		except Exception as e:
-			logger.info(file_excel + '---删除错误，错误信息：' + e)
+			logger.info(file_excel + '---删除错误，错误信息：' + str(e))
 			msg = "文件删除错误！"
 	return HttpResponse(msg)
 
@@ -348,7 +348,7 @@ def delete_pricedaily_csv(request):
 					)
 					msg = '文件：' + name + '，' + '删除成功！'
 				except Exception  as e:
-					msg = '文件：' + name + '，' + '删除错误：' + e
+					msg = '文件：' + name + '，' + '删除错误：' + str(e)
 
 				i += 1
 				per_deletecsv_progress = int((i / nlen) * 100)

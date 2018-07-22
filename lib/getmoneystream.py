@@ -34,8 +34,8 @@ class download_moneystream(object):
         driver = webdriver.PhantomJS(desired_capabilities=dcap, executable_path=os.path.join(settings.MEDIA_ROOT, 'phantomjs.exe'))
         try:
             driver.get(self.download_url)
-        except TimeoutException:
-            self.msg = '股票：' + self.code + '，' + self.download_url + '，链接连接超时！'
+        except TimeoutException as time_e:
+            self.msg = '股票：' + self.code + '，' + self.download_url + '，链接连接超时：' + str(time_e)
         try:
             table_tr_list = driver.find_element_by_xpath("//table[@id='dt_1']/tbody").find_elements_by_tag_name("tr")
             table_list = []     #存放数据
@@ -46,8 +46,8 @@ class download_moneystream(object):
                     row_list.append(td.text)
                 table_list.append(row_list)
             return table_list
-        except NoSuchElementException:
-            self.msg = '股票：' + self.code + '，' + self.download_url + '，没有相应的表格元素！'
+        except NoSuchElementException as elment_e:
+            self.msg = '股票：' + self.code + '，' + self.download_url + '，没有相应的表格元素：' + str(elment_e)
 
     def clean_data(self, origin_data):
         if isinstance(origin_data, list):

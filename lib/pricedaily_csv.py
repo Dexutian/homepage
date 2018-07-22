@@ -31,7 +31,7 @@ class download_pricedaily_file(object):
         if response.status_code == 200:
             return True
         else:
-            self.msg = '主页网址链接失败！'
+            self.msg = '股票：' + self.code +'主页网址链接失败！'
             return False
 
     def download(self, stockexchangeno, start_date, end_date):
@@ -46,7 +46,7 @@ class download_pricedaily_file(object):
                 if chunk:
                     f.write(chunk)
         else:
-            self.msg = '下载网址链接失败！'
+            self.msg = '股票：' + self.code +'下载网址链接失败！'
 
     def run(self):
         try:
@@ -54,7 +54,7 @@ class download_pricedaily_file(object):
                 self.download(self.stockexchangeno, self.start_date, self.end_date)
                 self.msg = '股票：' + self.code + '，' + self.start_date + '-' + self.end_date + '，历史数据文件下载成功！'
         except Exception as e:
-            print(e)
+            self.msg = '股票：' + self.code + '，' + '下载异常：' + str(e)
         finally:
             logger.info(self.msg)
 
@@ -79,8 +79,8 @@ class update_pricedaily_file(object):
                             row_unit.append(row_list[col_index])
                         row_dict.append(row_unit)
                 return row_dict
-        except:
-            self.msg = '文件异常！'
+        except Exception as e:
+            self.msg = '文件：' + self.file_name + '读取异常：' + str(e)
 
     def import_stock_data(self, row_dict):
         '''
@@ -112,17 +112,17 @@ class update_pricedaily_file(object):
                     data_list.append(data_unit)
             Pricedaily.objects.bulk_create(data_list)
         else:
-            self.msg = '文件没有数据！'
+            self.msg = '文件：' + self.file_name + '文件没有数据！'
         insert_num=len(data_list)
         return insert_num
 
     def run(self):
         try:
             row_dict = self.read_csv_data()
-            if  self.msg != '文件异常！':
+            if  '异常' not in self.msg:
                 insert_num = self.import_stock_data(row_dict)
-                self.msg = '成功更新'+str(insert_num)+'条数据！'
+                self.msg = '文件：' + self.file_name + '成功更新'+str(insert_num)+'条数据！'
         except Exception as e:
-            print(e)
+            self.msg = '文件：' + self.file_name + '更新数据异常：' + str(e)
         finally:
             logger.info(self.msg)
