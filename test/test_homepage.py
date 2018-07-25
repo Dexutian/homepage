@@ -22,3 +22,10 @@ class HomepageTestCase(StaticLiveServerTestCase):
             '%s%s' % (self.live_server_url, "/")
         )
         self.assertIn("Django应用", self.selenium.title)
+
+    def test_should_goto_stockans_when_click_stockans(self):
+        self.selenium.get(
+            '%s%s' % (self.live_server_url, "/")
+        )
+        self.selenium.find_element_by_link_text('登录').click()
+        self.assertIn("/auth/login/", self.selenium.current_url)
