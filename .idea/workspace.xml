@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5dcdd06e-5508-4beb-9e08-3afdedc5ac1a" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/homepage/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/homepage/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/media/log/stock.log" beforeDir="false" afterPath="$PROJECT_DIR$/media/log/stock.log" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,11 +18,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="test_homepage.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="test_homepage.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_homepage.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="21" column="42" lean-forward="true" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="42" />
+            <state relative-caret-position="312">
+              <caret line="21" column="42" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="42" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -30,14 +30,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="test.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/homepage/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="11" column="49" selection-start-line="11" selection-start-column="49" selection-end-line="11" selection-end-column="49" />
+            <state relative-caret-position="228">
+              <caret line="12" column="50" lean-forward="true" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/stock/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="14" column="25" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -102,8 +111,8 @@
         <option value="$PROJECT_DIR$/lib/getmoneystream.py" />
         <option value="$PROJECT_DIR$/stock/views.py" />
         <option value="$PROJECT_DIR$/lib/pricedaily_csv.py" />
-        <option value="$PROJECT_DIR$/homepage/test.py" />
         <option value="$PROJECT_DIR$/test/test_homepage.py" />
+        <option value="$PROJECT_DIR$/homepage/test.py" />
       </list>
     </option>
   </component>
@@ -117,8 +126,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-87" />
-    <option name="y" value="187" />
+    <option name="x" value="154" />
+    <option name="y" value="152" />
     <option name="width" value="1278" />
     <option name="height" value="626" />
   </component>
@@ -215,7 +224,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-87" y="187" width="1278" height="626" extended-state="0" />
+    <frame x="154" y="152" width="1278" height="626" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
@@ -499,13 +509,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stock/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" column="87" selection-start-line="15" selection-start-column="64" selection-end-line="15" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/pricedaily_csv.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
@@ -524,28 +527,32 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="33" column="131" lean-forward="true" selection-start-line="33" selection-start-column="27" selection-end-line="33" selection-end-column="131" />
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/homepage/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="11" column="49" selection-start-line="11" selection-start-column="49" selection-end-line="11" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test_homepage.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="21" column="42" lean-forward="true" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="42" />
+        <state relative-caret-position="312">
+          <caret line="21" column="42" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="42" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stock/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="14" column="25" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/homepage/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" column="50" lean-forward="true" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
