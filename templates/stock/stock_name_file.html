@@ -1,0 +1,46 @@
+{% extends "stock/stock_base.html" %}
+{% block title %}股票名称文件{% endblock %}
+{% block cssadded %}
+{% load staticfiles %}
+<link href="{% static 'other/css/stock_name.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div id="upload">
+  <form enctype="multipart/form-data" action="{% url 'stock:upload_name_file' %}" method="post">
+    {% csrf_token %}
+    <input type="file" name="myfile" />
+    <input type="submit" value="上传文件"/>
+  </form>
+</div>
+<div id="file_list"> {% if files %}
+  <table>
+    {% csrf_token %}
+    {% for file in files %}
+    <tr>
+      <td>{{ file }}</td>
+	  <td><input id="delete_btn" class="file_action" type="button" value="删除文件" rel="{{ forloop.counter }}" /></td>
+      <td><input id="update_btn" class="file_action" type="button" value="更新数据" rel="{{ forloop.counter }}" /></td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %} </div>
+{% endblock %}
+{% block jsadded %} 
+<script type="text/javascript">
+$(document).ready(function(){
+  $(".file_action").click(function() {
+	  var action = $(this).attr("value")
+	  var fileLink = $(this).parent().siblings().html()
+	  $.ajax({
+		  url: "{% url 'stock:update_name' %}",
+		  type: "POST",
+		  data: {"k1": fileLink, "action": action},
+		  success: function (data) {
+			  alert(data);
+			  window.location.href = "{% url 'stock:name_file' %}";
+			  }
+        })
+    });
+});
+</script> 
+{% endblock %}

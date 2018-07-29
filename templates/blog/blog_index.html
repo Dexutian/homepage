@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ MEDIA_URL }}pic/favicon.ico">
+
+    <title>博客首页</title>
+
+    {% load staticfiles %}
+	<!-- core CSS -->
+	<link href="{% static 'bootstrap-4.1.1/css/bootstrap.min.css' %}" rel="stylesheet">
+	<link href="{% static 'jsTree/themes/default/style.min.css' %}" rel="stylesheet">
+	<link href="{% static 'other/css/blog_index.css' %}" rel="stylesheet">
+  </head>
+
+  <body>
+	  <div class="container-fluid">
+		  <div class="row">
+			  <div class="col-md-2 col-12" id="category">
+		  	  </div>
+			  <div class="col-md-10 col-12">
+				   <iframe name='main' id="iframepage" frameborder="0" ></iframe>
+			  </div>
+		  </div>
+	  </div>
+    <!-- core JavaScript -->
+    <script src="{% static 'bootstrap-4.1.1/js/vendor/jquery-3.3.1.min.js' %}"></script>
+	<script src="{% static 'jsTree/jstree.min.js' %}"></script>
+    <script src="{% static 'bootstrap-4.1.1/js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap-4.1.1/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript">
+	$(function () {
+		$("#category").jstree({
+			'core':{
+				'data':{
+					"url":"{% url 'blog:get_category_data' %}",
+					"dataType":"json"
+				}
+			}
+		});
+		$("#category").on("changed.jstree", function(e, data){
+			var url = "{% url 'blog:list_category' '000' %}"
+			var id = data.selected;
+			window.parent.main.location.href = url.replace('000',id);
+		});
+	});
+    </script>
+  </body>
+</html>

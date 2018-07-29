@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>股票数据对比分析</title>
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'other/css/stock_contrast.css' %}" />
+<link rel="stylesheet" href="{% static 'bootstrap-4.1.1/css/bootstrap.min.css' %}" />
+</head><body>
+<div id="searcher"> 
+  请选择数据类型：
+  <input type="radio" name="line-type" value="tclose" checked>
+  收盘价
+  <input type="radio" name="line-type" value="high">
+  最高价
+  <input type="radio" name="line-type" value="low">
+  最低价
+  <input type="radio" name="line-type" value="topen">
+  开盘价
+  <input type="radio" name="line-type" value="voturnover">
+  成交量
+  <span>&nbsp;&nbsp;</span> 请输入股票代码：
+  <input type="text" id="search-text" name="q">
+  &nbsp;
+  <button type="button" id='add-button'>添加</button>
+  <span id='search-result'></span>
+</div>
+<div id="result-container"></div>
+<div id="container"></div>
+<div id="data_container">
+  <table class="table table-hover table-bordered">
+    <tr>
+      <td colspan="15">注：1.超大单：大于等于50万股或者100万元的成交单;&nbsp;&nbsp;2.大单：大于等于10万股或者20万元且小于50万股和100万元的成交单;&nbsp;&nbsp;3.中单：大于等于2万股或者4万元且小于10万股和20万元的成交单;&nbsp;&nbsp;4.小单：小于2万股和4万元的成交单;&nbsp;&nbsp;5.流入：买入成交额;&nbsp;&nbsp;6.流出：卖出成交额;&nbsp;&nbsp;7.主力流入：超大单加大单买入成交额之和;&nbsp;&nbsp;8.主力流出：超大单加大单卖出成交额之和;&nbsp;&nbsp;9.净额：流入-流出;&nbsp;&nbsp;10.净比：(流入-流出)/总成交额;</td>
+    </tr>
+    
+      <th colspan="2">股票信息</th>
+      <th colspan="13">前一天数据</th>
+    <tr>
+      <td>股票代码</td>
+      <td>股票简称</td>
+      <td>日期-1</td>
+      <td>成交量（股）</td>
+      <td>日期-2</td>
+      <td>主力净流入(万)</td>
+      <td>主力净流入占比(%)</td>
+      <td>超大单净流入(万)</td>
+      <td>超大单净流入占比(%)</td>
+      <td>大单净流入(万)</td>
+      <td>大单净流入占比(%)</td>
+      <td>中单净流入(万)</td>
+      <td>中单净流入占比(%)</td>
+      <td>小单净流入(万)</td>
+      <td>小单净流入占比(%)</td>
+    </tr>
+    <tbody id="data_body">
+    </tbody>
+  </table>
+</div>
+<script type="text/javascript" src="{% static 'echarts/echarts.js' %}"></script> 
+<script type="text/javascript" src="{% static 'bootstrap-4.1.1/js/vendor/jquery-3.3.1.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'bootstrap-4.1.1/js/bootstrap.min.js' %}"></script> 
+<script type="text/javascript">
+function setcssin(){
+	var obj = document.getElementById("search-result");
+	obj.style.cssText = "position:absolute;width:135px;height:210px;top:33px;left:560px;z-index:999;background:rgba(00,22,33,0.5);";
+	};
+function setcssout(){
+	var obj = document.getElementById("search-result");
+	obj.style.cssText = "";
+	};
+$(document).ready(function(e) {
+    $("#search-text").keyup(function(){
+		var q = $("#search-text").val();
+		$.get("{% url 'stock:get_stock_code' %}", {'q':q}, function(data){
+			for(var i=data.length-1; i >= 0; i--){
+				$("#search-result").append('<span id="result-item">' + data[i][0] + '|' + data[i][1] + '<span/><br/>')
+				};
+			})
+			setcssin()
+		});
+	$("#search-text").keydown(function(){
+		$("#search-result").empty();
+		setcssout();
+		});
+	$("#search-text").blur(function(){
+		$("#search-result").empty();
+		setcssout();
+		});
+	$('#search-result').on('mousedown','#result-item',function(){
+		var stockcode = $(this).text().split("|")[0];
+		var stockabb = $(this).text().split("|")[1];
+		$("#search-text").val(stockcode);
+		$("#search-text").attr("stockabb",stockabb);
+	});
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+option = {
+    tooltip : {
+        trigger: 'axis',
+		axisPointer: {
+                type: 'cross'
+            },
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    dataZoom: {
+        show: true,
+        start : 0
+    },
+    legend : {
+        data : []
+    },
+    grid: {
+		show:true,
+		top:'5.5%',
+		left:'2%',
+		right:'2%',
+		bottom:'15%',
+    },
+    xAxis : [
+        {
+            type : 'time',
+            splitNumber:10
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : []
+};
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+function ajaxchart(){
+	var line_type = $("input[name='line-type']:checked").val();
+	var stock_code_list = [];
+	$("#result-container").children().each(function() {
+		stock_code_list.push($(this).attr("id"));
+    });
+	$.get("{% url 'stock:get_contrast_data' %}", {'line_type': line_type, 'stockcode':JSON.stringify(stock_code_list)}, function(data){
+		var legend_data = [];
+		var series_data = [];
+		$("#data_body").empty();
+		for(var i=data.length-1; i >= 0; i--){
+			var series_unit = new Object();
+			legend_data.push(data[i]["legend"]);
+			series_unit.name = data[i]["legend"];
+			series_unit.type = 'line';
+			series_unit.symbol = 'none';
+			series_unit.data = data[i]["date_price"];
+			series_data.push(series_unit);
+			var datahtml = '<tr><td>' + data[i]["stockcode"] + '</td><td>' + data[i]["legend"] + '</td>';
+			for(var j=0;j <=data[i]["data_stream"].length-1; j++){
+				datahtml += '<td>' + data[i]["data_stream"][j] + '</td>';
+			}
+			datahtml += '</tr>'
+			$("#data_body").append(datahtml);
+			}
+		myChart.setOption({
+			legend:{
+				data:legend_data
+			},
+			series:series_data
+			});
+		})
+	};
+$("#add-button").click(function(){
+		var stockcode = $("#search-text").val();
+		var stockabb = $("#search-text").attr("stockabb");
+		var addhtml = '<span id = "' + stockcode + '" class = "added-item-text">' + stockabb + '</span>' + ' | '
+		if($('#' + stockcode).length == 0){
+			$("#result-container").append(addhtml);
+		}
+		ajaxchart();
+		});
+});
+</script>
+</body>
+</html>

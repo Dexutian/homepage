@@ -1,0 +1,139 @@
+{% extends "stock/stock_base.html" %}
+{% block title %}股票大单交易数据{% endblock %}
+{% block cssadded %}
+{% load staticfiles %}
+<link href="{% static 'other/css/stock_name.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div id="name_list">
+  <div id="name_table">
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="60" 
+        aria-valuemin="0" aria-valuemax="100" style="width: 60%;"> <span id="numprogress"></span> </div>
+    </div>
+    <div id="operator">
+      <div id="name_search">
+        <label><span>股票代码：</span></label>
+        <input type="text" id="stockcode">
+        <input type="button" value="搜索" onClick="search()" />
+      </div>
+      <div id="p_operator">
+        <label>批处理操作：</label>
+        <input class="updatedadang" type="button" mode="p" value="更新全部" />
+      </div>
+      <div id="s_operator">
+        <label>单处理操作：</label>
+        <input class="updatedadang" type="button" mode="s" value="更新选中" />
+      </div>
+    </div>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <td>选择</td>
+          <td>序号</td>
+          <td>股票代码</td>
+          <td>股票简称</td>
+          <td>数据条数</td>
+          <td>最近数据日期</td>
+        </tr>
+      </thead>
+      <tbody>
+      
+      {% if stocks %}
+      {% for stock in stocks %}
+      <tr>
+        <td><input class="choice" type="checkbox" /></td>
+        <td>{{ stock.id }}</td>
+        <td>{{ stock.stockcode }}</td>
+        <td>{{ stock.stockabb }}</td>
+        <td>{{ stock.count }}</td>
+        <td>{{ stock.max_date }}</td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+        </tbody>
+      
+    </table>
+  </div>
+  <div id="paginator" class="pagination-simple" align="center"> 
+    <!-- 如果当前页还有上一页，显示一个上一页的按钮 --> 
+    {% if stocks.has_previous %} <a href="?page={{ stocks.previous_page_number }}">上一页</a> {% endif %} 
+    <!-- 显示当前页面信息 --> 
+    <span class="current">第 {{ stocks.number }} 页 / 共 {{ stocks.paginator.num_pages }} 页</span> 
+    <!-- 如果当前页还有下一页，显示一个下一页的按钮 --> 
+    {% if stocks.has_next %} <a href="?page={{ stocks.next_page_number }}">下一页</a> {% endif %}
+    &nbsp;
+    <input type="text" class="page_num" />
+    <span>&nbsp;页</span>
+    <input class="page_btn" type="button" value="跳转" onclick="page_change()" />
+  </div>
+</div>
+{% endblock %}
+{% block jsadded %} 
+<script type="text/javascript">
+function page_change(){
+	var page_num = document.getElementsByClassName("page_num").item(0).value;
+	window.location.href = "?page=" + page_num;
+	}
+function search(){
+		var stockcode = document.getElementById("stockcode").value;
+		var url = "{% url 'stock:dadang_exchange' %}" + stockcode + "/";
+		window.location.href = url;
+}
+function getprogressnum(tp){
+	$.ajax({
+		url: "{% url 'stock:progress' %}",
+		type: "POST",
+		data:{"type":tp},
+		success: function (data) {
+			if(data == "100")
+			{
+				window.location.reload();
+				window.clearInterval(timer);
+			}
+			else
+			{
+				$(".progress-bar").css("width", data+"%");
+				document.getElementById("numprogress").innerHTML = data+"%";
+			}
+		}
+	})
+}
+function startprogress(tp){
+	$(".progress").css("display", "block");
+	$(".progress-bar").css("width","0%");
+	document.getElementById("numprogress").innerHTML = "0%";
+	var timer=self.setInterval(getprogressnum,60,tp);
+	}
+$(document).ready(function(){
+	$(".updatedadang").click(function(){
+		var mode = $(this).attr("mode");
+		if(mode == "p"){
+				$.ajax({
+					url: "{% url 'stock:update_dadang_exchange' %}",
+					type: "POST",
+					data: {"dm":"p"},
+					success: function (data) {
+						
+					}
+				})
+		}
+		if(mode == "s"){
+			var chk_value =[];
+			$('input[class="choice"]:checked').each(function(){
+				chk_value.push($(this).parent().nextAll().eq(1).text());
+			});
+			$.ajax({
+				url: "{% url 'stock:update_dadang_exchange' %}",
+				type: "POST",
+				data: {"dm":"s","code_list":JSON.stringify(chk_value)},
+				success: function (data) {
+					
+				}
+			})
+		}
+		startprogress("update_dadang_exchange")
+	})
+})
+</script> 
+{% endblock %}

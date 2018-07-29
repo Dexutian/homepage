@@ -1,0 +1,52 @@
+@charset "utf-8";
+/* CSS Document */
+html, body{
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-size: 95%;
+	vertical-align: middle;
+}
+div{
+	margin: 0;
+	padding: 0;
+}
+#upload, #name_list, #file_list{
+	margin-top: 5px;
+	margin-left: 5px;
+}
+#name_table, #remark{
+	margin: 0;
+	padding: 0;
+}
+.table-bordered{
+	width: 99%;
+	line-height: 40%;
+	margin: 0;
+	padding: 0;
+}
+.table-bordered thead{
+	text-align: center;
+}
+.table-bordered tbody{
+	text-align: right;
+}
+#paginator{
+	margin-top: 5px;
+}
+.page_num{
+	width: 40px;
+	height: 22px;
+}
+/*stock_pricedaily_data.html*/
+#time, #s_operator, #p_operator{
+	float: left;
+	margin-right: 20px;
+}
+.progress{
+	display: none;
+	margin-bottom: 5px;
+}
+.choice{
+	zoom: 80%;
+}

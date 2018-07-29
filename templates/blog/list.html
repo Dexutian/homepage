@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Growth Studio - Blog</title>
+</head>
+
+<body>
+	{% for blog in blogs %}
+	<h2><a href="{% url 'blog:blog_view' blog.slug %}" target="_blank">{{ blog.title }}</a></h2>
+	<p>{{ blog.body | slice:":80" | safe }}</p>
+	<p>{{ blog.posted }} - By {{ blog.author }}</p>
+	{% endfor %}
+</body>
+</html>
