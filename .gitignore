@@ -12,6 +12,7 @@
 *.jpg
 *.jpeg
 *.png
+*.exe
 !.gitkeep
 *.py[cod]
 *.$py.class
