@@ -9,7 +9,9 @@
 *.csv
 *.log
 *.ico
-/media/*
+*.jpg
+*.jpeg
+*.png
 !.gitkeep
 *.py[cod]
 *.$py.class
