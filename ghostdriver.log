@@ -1,0 +1,12 @@
+[INFO  - 2018-08-03T06:05:02.669Z] GhostDriver - Main - running on port 61936
+[INFO  - 2018-08-03T06:05:06.665Z] Session [2b837c20-96e3-11e8-851b-7de534fcf93d] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.2; WOW64; rv:21.0) Gecko/20100101 Firefox/21.0","webSecurityEnabled":true}
+[INFO  - 2018-08-03T06:05:06.666Z] Session [2b837c20-96e3-11e8-851b-7de534fcf93d] - page.customHeaders:  - {}
+[INFO  - 2018-08-03T06:05:06.666Z] Session [2b837c20-96e3-11e8-851b-7de534fcf93d] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"windows-10-32bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"},"phantomjs.page.settings.userAgent":"Mozilla/5.0 (Windows NT 6.2; WOW64; rv:21.0) Gecko/20100101 Firefox/21.0"}
+[INFO  - 2018-08-03T06:05:06.666Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 2b837c20-96e3-11e8-851b-7de534fcf93d
+[ERROR - 2018-08-03T06:05:07.109Z] Session [2b837c20-96e3-11e8-851b-7de534fcf93d] - page.onError - msg: ReferenceError: Can't find variable: $
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-03T06:05:07.110Z] Session [2b837c20-96e3-11e8-851b-7de534fcf93d] - page.onError - stack:
+  global code (http://localhost:61913/:96)
+
+  phantomjs://platform/console++.js:263 in error
