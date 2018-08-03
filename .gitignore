@@ -3,7 +3,7 @@
 *.db
 # Byte-compiled / optimized / DLL files
 /__pycache__/*
-/migrations/*
+*/migrations/*
 *.xls
 *.xlsx
 *.csv
