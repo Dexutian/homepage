@@ -7,12 +7,7 @@
 *.xls
 *.xlsx
 *.csv
-/media/*.log
-/media/*.ico
-/media/*.jpg
-/media/*.jpeg
-/media/*.png
-/media/*.exe
+/media/*
 !.gitkeep
 *.py[cod]
 *.$py.class
