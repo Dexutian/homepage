@@ -10,6 +10,7 @@
 *.log
 *.ico
 /media/*
+!.gitkeep
 *.py[cod]
 *.$py.class
 *.sqlite3
