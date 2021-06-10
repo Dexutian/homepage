@@ -1,6 +1,6 @@
 certifi==2018.4.16
 chardet==3.0.4
-Django==2.0.4
+Django==2.2.24
 django-ckeditor==5.5.0
 django-js-asset==1.1.0
 django-suit==0.2.26
